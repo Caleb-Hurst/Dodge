@@ -4,116 +4,119 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dodge.game.main.DodgeGame;
 import com.dodge.game.service.SoundManagerService;
 
-
-public class HomeScreen implements Screen{
-	
+public class HomeScreen implements Screen {
+	private Stage stage;
 	private DodgeGame game;
-    private BitmapFont font;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private SoundManagerService soundManagerService;
-    private Rectangle startGameButton;
-    private Rectangle tutorialButton;
+	private BitmapFont font;
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	private SoundManagerService soundManagerService;
+	private Button button;
+	private Skin skin;
 
-	  public HomeScreen(DodgeGame game) {
-	        this.game = game;
-	        this.font = new BitmapFont();
-	        this.camera = new OrthographicCamera();
-	        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-	        this.batch = new SpriteBatch();
-	        this.soundManagerService = new SoundManagerService();
-	    }
-    @Override
-    public void show() {       
-    	float buttonWidth = 100;
-        float buttonHeight = 30;
-        float lineHeight = 30f;
-        startGameButton = new Rectangle(Gdx.graphics.getWidth() / 2 - buttonWidth / 2,
-                Gdx.graphics.getHeight() / 2 - lineHeight * 2,
-                buttonWidth, buttonHeight);
+	public HomeScreen(DodgeGame game) {
+		this.game = game;
+		this.font = new BitmapFont();
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.batch = new SpriteBatch();
+		this.soundManagerService = new SoundManagerService();
+	}
+	@Override
+	public void show() {
+		// A 2D scene graph containing hierarchies of actors. 
+		// Stage handles the viewport and distributes input events.
+		 stage = new Stage();
+	        Gdx.input.setInputProcessor(stage);
+	        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+	        textButtonStyle.font = font;
+	        // Using something called a table that organizes all of my elements to display on the screen
+	        Table table = new Table();
+	        // Makes the table take the whole stage
+	        table.setFillParent(true); 
+	        // Creating the actual buttons 
+	        TextButton playButton = new TextButton("Play", textButtonStyle);
+	        TextButton tutorialButton = new TextButton("Tutorial", textButtonStyle);
 
-tutorialButton = new Rectangle(Gdx.graphics.getWidth() / 2 - buttonWidth / 2,
-               Gdx.graphics.getHeight() / 2 - lineHeight - buttonHeight,
-               buttonWidth, buttonHeight);
-        soundManagerService.playMusic("8bit-music-for-game-68698.mp3");
-    }
+	        // Add button listeners
+	        playButton.addListener(new ClickListener() {
+	            @Override
+	            public void clicked(InputEvent event, float x, float y) {
+	                // Handle Play button click (navigate to Play screen, etc.)
+	                System.out.println("Play button clicked");
+	                game.setScreen(new PlayScreen(game));
+	            }
+	        });
 
-    @Override
-    public void render(float delta) {
-    	 Gdx.gl.glClearColor(0, 0, 0, 1);
-         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	        tutorialButton.addListener(new ClickListener() {
+	            @Override
+	            public void clicked(InputEvent event, float x, float y) {
+	                // Handle Tutorial button click (navigate to Tutorial screen, etc.)
+	                System.out.println("Tutorial button clicked");
+	            }
+	        });
 
-         // Set up the camera and batch
-         camera.update();
-         batch.setProjectionMatrix(camera.combined);
+	        // Add buttons to the table
+	        table.add(playButton).padBottom(20).row();
+	        table.add(tutorialButton).padBottom(20).row();
 
-         // Begin the batch
-         batch.begin();
+	        // Add the table to the stage
+	        stage.addActor(table);
 
-         // Draw the text as a button
-         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-         font.getData().setScale(1);
-         float lineHeight = 30f;
-        
-         font.draw(batch, "DODGE", Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - lineHeight * 2); // Adjust the multiplier as needed
+	    soundManagerService.playMusic("8bit-music-for-game-68698.mp3");
+	}
 
-         font.draw(batch, "Start Game", Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 );
-         font.draw(batch, "Tutorial", Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - lineHeight);  // End the batch
-         if (Gdx.input.justTouched()) {
-             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-             camera.unproject(touchPos); // Convert screen coordinates to world coordinates
+	@Override
+	public void render(float delta) {
+		  Gdx.gl.glClearColor(0, 0, 0, 1);
+	        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-             // Check if the click is within the start game button
-             if (startGameButton.contains(touchPos.x, touchPos.y)) {
-                 game.setScreen(new PlayScreen(game)); // Transition to the GameScreen
-             }
+	        // Draw the stage
+	        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+	        stage.draw();
 
-             // Check if the click is within the tutorial button
-             if (tutorialButton.contains(touchPos.x, touchPos.y)) {
-                 game.setScreen(new TutorialScreen(game)); // Transition to the TutorialScreen
-             }
-         }
-         batch.end();
-         
-        
-    }
+	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

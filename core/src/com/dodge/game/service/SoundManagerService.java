@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 public class SoundManagerService {
+	private Music backgroundMusic;
 	
 	public Texture loadImage(String fileName) {
 		Texture texture = new Texture(Gdx.files.internal(fileName));
@@ -21,11 +22,24 @@ public class SoundManagerService {
 		return music;
 	}
 	public Music playMusic(String fileName) {	
-		Music backgroundMusic = loadMusic(fileName);		
+		backgroundMusic = loadMusic(fileName);		
 //		// start playback
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
 		return backgroundMusic;
+	}
+	
+	public void setVolume(Music music, float x) {
+		music.setVolume(x);
+		
+	}
+	
+	public void stopMusic() {
+		if (backgroundMusic != null) {
+            backgroundMusic.stop();
+            backgroundMusic.dispose();
+            backgroundMusic = null; // Set to null to indicate that the music has been stopped and disposed
+        }
 	}
 
 }

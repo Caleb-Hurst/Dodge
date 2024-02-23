@@ -2,6 +2,7 @@ package com.dodge.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,8 +24,6 @@ public class HomeScreen implements Screen {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private SoundManagerService soundManagerService;
-	private Button button;
-	private Skin skin;
 
 	public HomeScreen(DodgeGame game) {
 		this.game = game;
@@ -49,7 +48,7 @@ public class HomeScreen implements Screen {
 	        // Creating the actual buttons 
 	        TextButton playButton = new TextButton("Play", textButtonStyle);
 	        TextButton tutorialButton = new TextButton("Tutorial", textButtonStyle);
-
+	        soundManagerService.playMusic("8bit-music-for-game-68698.mp3");
 	        // Add button listeners
 	        playButton.addListener(new ClickListener() {
 	            @Override
@@ -57,6 +56,7 @@ public class HomeScreen implements Screen {
 	                // Handle Play button click (navigate to Play screen, etc.)
 	                System.out.println("Play button clicked");
 	                game.setScreen(new PlayScreen(game));
+	                dispose();
 	            }
 	        });
 
@@ -75,7 +75,7 @@ public class HomeScreen implements Screen {
 	        // Add the table to the stage
 	        stage.addActor(table);
 
-	    soundManagerService.playMusic("8bit-music-for-game-68698.mp3");
+	  
 	}
 
 	@Override
@@ -115,8 +115,7 @@ public class HomeScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		soundManagerService.stopMusic();
 	}
 
 }

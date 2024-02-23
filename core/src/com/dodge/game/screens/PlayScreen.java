@@ -1,29 +1,37 @@
 package com.dodge.game.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
+import com.dodge.game.service.ObjectManagerService;
+import com.dodge.game.service.SoundManagerService;
 
-public class PlayScreen implements Screen{
-private DodgeGame game;
-private Texture shipImage;
-
+public class PlayScreen implements Screen {
+	private DodgeGame game;
+	private Texture shipImage;
+	private ObjectManagerService objectManagerService;
+	private SoundManagerService soundManagerService;
+	private Ship playerShip;
+	private SpriteBatch spriteBatch;
 	public PlayScreen(DodgeGame game) {
 		this.game = game;
+		this.soundManagerService = new SoundManagerService();
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-//		
-//		ship = dodgeService.generateGameObject("ship",90,90,800 / 2 - 90 / 2,20);
+		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
+		soundManagerService.setVolume(backgroundMusic,.1f);
+		playerShip = ObjectManagerService.createPlayerShip();
+		spriteBatch = new SpriteBatch();
 //		laser = dodgeService.generateGameObject("laser", 35, 10, ship.x + ship.width / 2 - 5, ship.y + ship.height);	
 //		laserImage = dodgeService.loadImage("laser-2.png");
-		shipImage = new Texture(Gdx.files.internal("ship.png"));
+		
 //		dodgeSoundShoot = dodgeService.loadSound("shoot-1-81135.mp3");
 	}
 
@@ -44,43 +52,42 @@ private Texture shipImage;
 //		batch.end();
 		ScreenUtils.clear(0, 0, 0, 1);
 
-	    // Update game state here
+		// Update game state here
 
-	    // Draw a filled rectangle on the screen
-	    game.batch.begin();
-	    game.batch.setColor(Color.RED); // Set the color (you can change it to any other color)
-	    game.batch.draw(new TextureRegion(new Texture("ship.png")), 100, 100, 200, 200); // Draw a filled rectangle
-	    game.batch.end();
+		// Draw a filled rectangle on the screen
+		spriteBatch.begin();
+		playerShip.draw(spriteBatch);
+		spriteBatch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

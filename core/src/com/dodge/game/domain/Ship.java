@@ -6,52 +6,79 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Ship {
-	
+
 	private Sprite sprite;
 	private Rectangle boundingBox;
-	
+
 	public Ship(float x, float y, float width, float height, String texturePath) {
 		Texture shipTexture = new Texture(texturePath);
 		sprite = new Sprite(shipTexture);
-		
-		// Set position and size 
+
+		// Set position and size
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);
-		
+		sprite.setOriginCenter();
 		// maybe use for collision detection later on HERE
 		boundingBox = new Rectangle(x, y, width, height);
 	}
+
 	public void setPosition(float x, float y) {
-        sprite.setPosition(x, y);
-        boundingBox.setPosition(x, y);
-    }
+		sprite.setPosition(x, y);
+		boundingBox.setPosition(x, y);
+	}
 
-    public void draw(Batch batch) {
-        sprite.draw(batch);
-    }
+	public void setOrigin(float x, float y) {
+		sprite.setOrigin(x, y);
+	}
 
-    public float getX() {
-        return sprite.getX();
-    }
+	public Float getRotation() {
+		return sprite.getRotation();
+	}
 
-    public float getY() {
-        return sprite.getY();
-    }
+	public void rotate(float degrees) {
+//		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		sprite.rotate(degrees);
 
-    public float getWidth() {
-        return sprite.getWidth();
-    }
+	}
 
-    public float getHeight() {
-        return sprite.getHeight();
-    }
+	public void move(float deltaX, float deltaY) {
+		sprite.translate(deltaX, deltaY);
+	}
 
-    public Rectangle getBoundingBox() {
-        return boundingBox;
-    }
+	public void draw(Batch batch) {
+		sprite.draw(batch);
+	}
 
-    public void dispose() {
-        sprite.getTexture().dispose();
-    }
+	public float getX() {
+		return sprite.getX();
+	}
+
+	public float getY() {
+		return sprite.getY();
+	}
+
+	public float getWidth() {
+		return sprite.getWidth();
+	}
+
+	public float getHeight() {
+		return sprite.getHeight();
+	}
+
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
+
+	public void dispose() {
+		sprite.getTexture().dispose();
+	}
+
+	public float getOriginX() {
+		// TODO Auto-generated method stub
+		return sprite.getOriginX();
+	}
+	public float getOriginY() {
+		return sprite.getOriginY();
+	}
 
 }

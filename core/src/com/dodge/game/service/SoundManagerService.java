@@ -42,4 +42,10 @@ public class SoundManagerService {
         }
 	}
 
+	public void laser() {
+		Sound sound = Gdx.audio.newSound(Gdx.files.internal("shoot-1-81135.mp3"));
+		sound.play(0.2f);
+		
+	}
+
 }

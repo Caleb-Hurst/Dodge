@@ -2,6 +2,7 @@ package com.dodge.game.service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 
 public class ObjectManagerService {
@@ -21,14 +22,28 @@ public class ObjectManagerService {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
-        // Calculate the initial position for centering the ship
-        float shipWidth = 64;  // Replace with the actual width of your ship
-        float shipHeight = 64; // Replace with the actual height of your ship
+        // size of the player ship
+        float shipWidth = 64;  
+        float shipHeight = 64; 
+        // calculate the position of the ship to the center 
+        // by subtracting each width and height divided by 2 to find the center
         float initialX = (screenWidth - shipWidth) / 2;
         float initialY = (screenHeight - shipHeight) / 2;
 
         // Create and return a new player ship
         return new Ship(initialX, initialY, shipWidth, shipHeight, "ship.png");
     }
+	public static Laser createPlayerLaser(Ship playerShip) {
+	    // size of the player laser
+	    float laserWidth = 6;  
+	    float laserHeight = 40; 
+
+	    // Calculate the initial position based on the ship's current position
+	    float initialX = playerShip.getX() + playerShip.getWidth() / 2 - laserWidth / 2;
+	    float initialY = playerShip.getY() + playerShip.getHeight();
+
+	    // Create and return a new player laser
+	    return new Laser(initialX, initialY, laserWidth, laserHeight, "laser-2.png",300,playerShip.getRotation());
+	}
 	
 }

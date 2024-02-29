@@ -8,21 +8,20 @@ import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
 import com.dodge.game.service.InputHandlerService;
+import com.dodge.game.service.LaserService;
 import com.dodge.game.service.ObjectManagerService;
 import com.dodge.game.service.SoundManagerService;
 
 public class PlayScreen implements Screen {
-	private DodgeGame game;
 	private SoundManagerService soundManagerService;
 	private Ship playerShip;
+	private Laser playerLaser;
 	private SpriteBatch spriteBatch;
 	private InputHandlerService inputHandlerService;
-	private Laser playerLaser;
-
+	private LaserService laserService = new LaserService();
 	public PlayScreen(DodgeGame game) {
-		this.game = game;
 		this.soundManagerService = new SoundManagerService();
-		this.inputHandlerService = new InputHandlerService(soundManagerService);
+		this.inputHandlerService = new InputHandlerService();
 		this.playerShip = ObjectManagerService.createPlayerShip();
 		this.playerLaser = ObjectManagerService.createPlayerLaser(playerShip);
 		this.spriteBatch = new SpriteBatch();
@@ -38,8 +37,8 @@ public class PlayScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
-		inputHandlerService.handleInput(delta, playerShip,playerLaser);
-		playerLaser.update(delta, playerShip.getRotation());
+		inputHandlerService.handleInput(delta,playerShip,playerLaser);
+		laserService.update(delta, playerShip.getRotation(),playerLaser);
 		spriteBatch.begin();
 		playerShip.draw(spriteBatch);
 		playerLaser.draw(spriteBatch);

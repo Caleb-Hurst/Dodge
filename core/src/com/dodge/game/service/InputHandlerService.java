@@ -7,13 +7,8 @@ import com.dodge.game.domain.Ship;
 
 public class InputHandlerService {
 
-	private SoundManagerService soundManagerService;
-	private int a = 0;
+	private LaserService laserService = new LaserService();
 	private boolean spaceBarPressedLastFrame = false;
-
-	public InputHandlerService(SoundManagerService soundManagerService) {
-		this.soundManagerService = soundManagerService;
-	}
 
 	public void handleInput(float delta, Ship playerShip, Laser playerLaser) {
 		float speed = 250 * delta; // Adjust the speed
@@ -31,14 +26,7 @@ public class InputHandlerService {
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			playerShip.move(speed, 0);
 		}
-//		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-//			System.out.println(rotation);
-//			if((rotation <180 && rotation >0) || (rotation > -360 && rotation < -180))
-//	        playerShip.rotate(-rotationSpeed * delta);
-//			if ( (rotation >=180 && rotation <=360) || (rotation >= -180 && rotation <= 0)) {
-//				playerShip.rotate(rotationSpeed * delta);
-//			}
-//	    }
+
 	    if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 	    	System.out.println(rotation);
 	        playerShip.rotate(rotationSpeed * delta);
@@ -49,21 +37,9 @@ public class InputHandlerService {
 	        playerShip.rotate(-rotationSpeed * delta);
 //	        playerLaser.rotate(rotationSpeed * delta);
 	    }
-//	    if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-//	    	System.out.println(rotation);
-//	    	if (rotation < 180 && rotation >= 0) {
-//	        playerShip.rotate(rotationSpeed * delta);
-//	    	}
-//	    	if (rotation >180 && rotation <360) {
-//	    		playerShip.rotate(-rotationSpeed * delta);
-//	    	}
-//	    }
-
 	    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 	        if (!spaceBarPressedLastFrame) {
-	            playerLaser.shoot(playerShip);
-	            soundManagerService.laser();
-	            System.out.println(a++);
+	            laserService.shoot(playerShip,playerLaser);           
 	        }
 	        spaceBarPressedLastFrame = true;
 	    } else {

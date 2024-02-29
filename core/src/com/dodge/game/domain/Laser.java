@@ -12,57 +12,34 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Laser {
 	private Sprite sprite;
-	private Rectangle boundingBox;
-	private Boolean active;
+	private boolean active = false;
 	private float speed;
-    private float angle;
-    private float initialAngle;
+	private float width;
+	private float height;
+	private float x;
+	private float y;
 
-	public Laser(float x, float y, float width, float height, String texturePath, float speed, float shipRotation) {
-		Texture lasterTexture = new Texture(texturePath);
-		sprite = new Sprite(lasterTexture);
 
-		// Set the dimensions of the sprite
+	public void setSize(float width, float height) {
 		sprite.setSize(width, height);
-
-		// Set the bounding box for collision detection
-		boundingBox = new Rectangle(x, y, width, height);
-
-		active = false;
-		this.speed = speed;
-        this.angle = shipRotation; // Initial angle
-        this.initialAngle = shipRotation; 
 	}
 
-	public void setSize(float x, float y) {
-		sprite.setSize(x, y);
-	}
-	public void shoot(Ship playerShip) {
-		float spriteCenterX = playerShip.getX() + sprite.getWidth() / 2;
-		float spriteBottomY = playerShip.getY() + -20f; // Change to bottom
-
-		// Set the origin to the bottom-center of the sprite
-		sprite.setOrigin(sprite.getWidth() / 2, 0);
-
-		// Calculate a position relative to the bottom-center of the sprite
-		float offsetX = 25f;
-		/* your offset from the center along the x-axis */;
-		float offsetY = -50f;
-		/* your offset from the bottom along the y-axis */;
-
-		float targetX = spriteCenterX + offsetX;
-		float targetY = spriteBottomY - offsetY; // Subtract offsetY from the bottom Y
-		sprite.setPosition(targetX, targetY);
-		sprite.setRotation(playerShip.getRotation());
-		active = true;
+	public Sprite getSprite() {
+		return sprite;
 	}
 
-	public void deactivate() {
-		active = false;
-	}
+	public void setSprite(String texturePath) {
+        Texture laserTexture = new Texture(texturePath);
+        this.sprite = new Sprite(laserTexture);
+    }
 
-	public boolean isActive() {
+
+	public Boolean getActive() {
 		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public void draw(Batch batch) {
@@ -70,18 +47,48 @@ public class Laser {
 			sprite.draw(batch);
 		}
 	}
-	public void update(float delta, float initialAngle) {
-        // Calculate the movement along x and y axes based on the initial angle
-        float deltaX = speed * delta * MathUtils.cosDeg(initialAngle);
-        float deltaY = -speed * delta * MathUtils.sinDeg(initialAngle);  // Negate the sin component
 
-        // Move the laser based on calculated values
-        sprite.translate(deltaY, deltaX);
+	public float getSpeed() {
+		return speed;
+	}
 
-        // Optionally, you can add logic to check if the laser goes off the screen and handle it accordingly
-        if (sprite.getY() > Gdx.graphics.getHeight() || sprite.getY() < 0 ||
-            sprite.getX() < 0 || sprite.getX() > Gdx.graphics.getWidth()) {
-            // Optionally, you can handle what should happen when the laser goes off the screen
-        }
-    }
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setY(float y) {
+		this.y = y;
+	}
+	
+
+
+	
 }

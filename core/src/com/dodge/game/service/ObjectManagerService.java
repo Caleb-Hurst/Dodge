@@ -29,21 +29,20 @@ public class ObjectManagerService {
         // by subtracting each width and height divided by 2 to find the center
         float initialX = (screenWidth - shipWidth) / 2;
         float initialY = (screenHeight - shipHeight) / 2;
-
         // Create and return a new player ship
         return new Ship(initialX, initialY, shipWidth, shipHeight, "ship.png");
     }
 	public static Laser createPlayerLaser(Ship playerShip) {
-	    // size of the player laser
-	    float laserWidth = 6;  
-	    float laserHeight = 40; 
-
-	    // Calculate the initial position based on the ship's current position
-	    float initialX = playerShip.getX() + playerShip.getWidth() / 2 - laserWidth / 2;
-	    float initialY = playerShip.getY() + playerShip.getHeight();
-
+		Laser laser = new Laser();
+		laser.setSprite("laser-2.png");
+		laser.setSpeed(300);
+		laser.setWidth(6);
+		laser.setHeight(40);
+		laser.setSize(6, 40);
+		laser.setX(playerShip.getX() + playerShip.getWidth() / 2 - laser.getWidth() / 2);
+		laser.setY(playerShip.getY() + playerShip.getHeight());
 	    // Create and return a new player laser
-	    return new Laser(initialX, initialY, laserWidth, laserHeight, "laser-2.png",300,playerShip.getRotation());
+	    return laser;
 	}
 	
 }

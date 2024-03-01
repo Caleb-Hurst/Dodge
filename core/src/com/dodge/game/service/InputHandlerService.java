@@ -10,7 +10,7 @@ public class InputHandlerService {
 	private LaserService laserService = new LaserService();
 	private boolean spaceBarPressedLastFrame = false;
 
-	public void handleInput(float delta, Ship playerShip, Laser playerLaser) {
+	public void handleInput(float delta, Ship playerShip, Laser laser) {
 		float speed = 250 * delta; // Adjust the speed
 		float rotationSpeed = 500;
 		float rotation = (playerShip.getRotation() + 360) % 360;
@@ -39,7 +39,7 @@ public class InputHandlerService {
 	    }
 	    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 	        if (!spaceBarPressedLastFrame) {
-	            laserService.shoot(playerShip,playerLaser);           
+	            laserService.shoot(playerShip);           
 	        }
 	        spaceBarPressedLastFrame = true;
 	    } else {
@@ -48,28 +48,5 @@ public class InputHandlerService {
 	    }
 	    
 	}
-//	private void handleInput() {
-//		boolean spaceBarPressed = false;
-//    	boolean isShooting = false;
-//    	Laser laser = new Laser();
-//		 // Check for space bar input
-//	    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-//	    	
-//	    }
-//	        if (!spaceBarPressed) {
-//	            spaceBarPressed = true;
-//	            isShooting = true;
-//	            laser.x = ship.x + ship.width / 2 - laser.width / 2; 
-//	            laser.y = ship.y + ship.height; // Set the laser starting position just above the ship
-//	            dodgeSoundShoot.play(LASER_SOUND_VOLUME);
-//	        }
-//	    } else {
-//	        spaceBarPressed = false;
-//	    }
-//
-//	    // Reset shooting flag when space bar is not pressed
-//	    if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-//	        isShooting = false;
-//	    }
 
 }

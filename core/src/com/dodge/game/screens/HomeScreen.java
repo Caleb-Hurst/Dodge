@@ -48,7 +48,7 @@ public class HomeScreen implements Screen {
 	        // Creating the actual buttons 
 	        TextButton playButton = new TextButton("Play", textButtonStyle);
 	        TextButton tutorialButton = new TextButton("Tutorial", textButtonStyle);
-	        soundManagerService.playMusic("8bit-music-for-game-68698.mp3");
+//	        soundManagerService.playMusic("8bit-music-for-game-68698.mp3");
 	        // Add button listeners
 	        playButton.addListener(new ClickListener() {
 	            @Override

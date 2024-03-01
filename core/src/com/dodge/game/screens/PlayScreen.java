@@ -19,11 +19,13 @@ public class PlayScreen implements Screen {
 	private SpriteBatch spriteBatch;
 	private InputHandlerService inputHandlerService;
 	private LaserService laserService = new LaserService();
+	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	public PlayScreen(DodgeGame game) {
 		this.soundManagerService = new SoundManagerService();
 		this.inputHandlerService = new InputHandlerService();
 		this.playerShip = ObjectManagerService.createPlayerShip();
-		this.playerLaser = ObjectManagerService.createPlayerLaser(playerShip);
+        this.playerLaser = objectManagerService.createPlayerLaser(playerShip); // Create a new Laser object
+
 		this.spriteBatch = new SpriteBatch();
 	}
 
@@ -41,7 +43,9 @@ public class PlayScreen implements Screen {
 		laserService.update(delta, playerShip.getRotation(),playerLaser);
 		spriteBatch.begin();
 		playerShip.draw(spriteBatch);
-		playerLaser.draw(spriteBatch);
+		for (Laser laser : laserService.getLasers()) {
+	        laser.draw(spriteBatch);
+	    }
 		spriteBatch.end();
 		 
 	}

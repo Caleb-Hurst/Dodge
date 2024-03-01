@@ -25,7 +25,7 @@ public class SoundManagerService {
 		backgroundMusic = loadMusic(fileName);		
 //		// start playback
 		backgroundMusic.setLooping(true);
-		backgroundMusic.play();
+//		backgroundMusic.play();
 		return backgroundMusic;
 	}
 	

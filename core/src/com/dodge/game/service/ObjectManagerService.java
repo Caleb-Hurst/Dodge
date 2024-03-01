@@ -32,7 +32,7 @@ public class ObjectManagerService {
         // Create and return a new player ship
         return new Ship(initialX, initialY, shipWidth, shipHeight, "ship.png");
     }
-	public static Laser createPlayerLaser(Ship playerShip) {
+	public Laser createPlayerLaser(Ship playerShip) {
 		Laser laser = new Laser();
 		laser.setSprite("laser-2.png");
 		laser.setSpeed(300);

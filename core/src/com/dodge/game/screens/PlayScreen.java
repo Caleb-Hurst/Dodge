@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
@@ -20,12 +21,15 @@ public class PlayScreen implements Screen {
 	private InputHandlerService inputHandlerService;
 	private LaserService laserService;
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
+	private Enemy enemy;
 	public PlayScreen(DodgeGame game) {
 		this.laserService = new LaserService();
 		this.soundManagerService = new SoundManagerService();
 		this.inputHandlerService = new InputHandlerService(laserService);
 		this.playerShip = ObjectManagerService.createPlayerShip();
 		this.spriteBatch = new SpriteBatch();
+		this.enemy = new Enemy();
+		
 	}
 
 	@Override
@@ -46,6 +50,7 @@ public class PlayScreen implements Screen {
 		for (Laser laser : laserService.getLasers()) {
 	        laser.draw(spriteBatch);
 	    }
+		enemy.draw(spriteBatch);
 		spriteBatch.end();
 		 
 	}

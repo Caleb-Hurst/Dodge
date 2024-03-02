@@ -51,6 +51,9 @@ public class ObjectManagerService {
 	
 	public Enemy createEnemy(Ship playerShip) {
 		Enemy enemy = new Enemy();
+		enemy.setSprite("1335885-middle.png");
+		enemy.setX(0);
+		enemy.setY(0);
 		enemy.setAngle(playerShip.getRotation() - 180);
 		enemies.add(enemy);
 		return enemy;

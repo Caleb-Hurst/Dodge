@@ -1,5 +1,7 @@
 package com.dodge.game.service;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.dodge.game.domain.Laser;
@@ -7,10 +9,14 @@ import com.dodge.game.domain.Ship;
 
 public class InputHandlerService {
 
-	private LaserService laserService = new LaserService();
+	public InputHandlerService(LaserService laserService) {
+		this.laserService = laserService;
+	}
+
+	private LaserService laserService;
 	private boolean spaceBarPressedLastFrame = false;
 
-	public void handleInput(float delta, Ship playerShip, Laser playerLaser) {
+	public void handleArrowInput(float delta, Ship playerShip, Laser laser) {
 		float speed = 250 * delta; // Adjust the speed
 		float rotationSpeed = 500;
 		float rotation = (playerShip.getRotation() + 360) % 360;
@@ -37,39 +43,21 @@ public class InputHandlerService {
 	        playerShip.rotate(-rotationSpeed * delta);
 //	        playerLaser.rotate(rotationSpeed * delta);
 	    }
-	    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-	        if (!spaceBarPressedLastFrame) {
-	            laserService.shoot(playerShip,playerLaser);           
-	        }
-	        spaceBarPressedLastFrame = true;
-	    } else {
-	        spaceBarPressedLastFrame = false;
-//	        playerLaser.deactivate();
-	    }
+	    
 	    
 	}
-//	private void handleInput() {
-//		boolean spaceBarPressed = false;
-//    	boolean isShooting = false;
-//    	Laser laser = new Laser();
-//		 // Check for space bar input
-//	    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-//	    	
-//	    }
-//	        if (!spaceBarPressed) {
-//	            spaceBarPressed = true;
-//	            isShooting = true;
-//	            laser.x = ship.x + ship.width / 2 - laser.width / 2; 
-//	            laser.y = ship.y + ship.height; // Set the laser starting position just above the ship
-//	            dodgeSoundShoot.play(LASER_SOUND_VOLUME);
-//	        }
-//	    } else {
-//	        spaceBarPressed = false;
-//	    }
-//
-//	    // Reset shooting flag when space bar is not pressed
-//	    if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-//	        isShooting = false;
-//	    }
+	
+	public ArrayList<Laser> handleSpacebarInput(Ship playerShip) {
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+	        if (!spaceBarPressedLastFrame) {
+	            ArrayList<Laser>lasers = laserService.shoot(playerShip);
+	            spaceBarPressedLastFrame = true;
+	            return lasers;
+	        }
+	    } else {
+	        spaceBarPressedLastFrame = false;
+	    }
+		return new ArrayList<>();
+	}
 
 }

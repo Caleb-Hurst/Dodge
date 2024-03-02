@@ -9,7 +9,11 @@ import com.dodge.game.domain.Ship;
 
 public class InputHandlerService {
 
-	private LaserService laserService = new LaserService();
+	public InputHandlerService(LaserService laserService) {
+		this.laserService = laserService;
+	}
+
+	private LaserService laserService;
 	private boolean spaceBarPressedLastFrame = false;
 
 	public void handleArrowInput(float delta, Ship playerShip, Laser laser) {
@@ -46,13 +50,12 @@ public class InputHandlerService {
 	public ArrayList<Laser> handleSpacebarInput(Ship playerShip) {
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 	        if (!spaceBarPressedLastFrame) {
-	            ArrayList<Laser> lasers = laserService.shoot(playerShip);    
+	            ArrayList<Laser>lasers = laserService.shoot(playerShip);
+	            spaceBarPressedLastFrame = true;
 	            return lasers;
 	        }
-	        spaceBarPressedLastFrame = true;
 	    } else {
 	        spaceBarPressedLastFrame = false;
-//	        playerLaser.deactivate();
 	    }
 		return new ArrayList<>();
 	}

@@ -13,10 +13,10 @@ public class LaserService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	SoundManagerService soundManagerService = new SoundManagerService();
 	public ArrayList<Laser> lasers = new ArrayList<>();
-	
-	public ArrayList<Laser> shoot(Ship playerShip) {	
+
+	public ArrayList<Laser> shoot(Ship playerShip) {
 		Laser laser = objectManagerService.createPlayerLaser(playerShip);
-//		soundManagerService.laser();
+		soundManagerService.laser();
 		float spriteCenterX = playerShip.getX() + laser.getSprite().getWidth() / 2;
 		float spriteBottomY = playerShip.getY() + -20f; // Change to bottom
 		// Set the origin to the bottom-center of the sprite
@@ -32,34 +32,33 @@ public class LaserService {
 		laser.getSprite().setRotation(playerShip.getRotation());
 		lasers.add(laser);
 		laser.setActive(true);
-		
-		return  lasers;
+		return lasers;
 	}
-	public void update(float delta, float initialAngle, Laser laser) {
+
+	public void update(float delta, float initialAngle) {
 		Iterator<Laser> iterator = lasers.iterator();
-	    while (iterator.hasNext()) {
-	        Laser currentLaser = iterator.next();
-	        // Calculate the movement along x and y axes based on the initial angle
-	        float deltaX = currentLaser.getSpeed() * delta * MathUtils.cosDeg(initialAngle);
-	        float deltaY = -currentLaser.getSpeed() * delta * MathUtils.sinDeg(initialAngle);
+		while (iterator.hasNext()) {
+			Laser currentLaser = iterator.next();
+			// Calculate the movement along x and y axes based on the initial angle
+			float deltaX = currentLaser.getSpeed() * delta * MathUtils.cosDeg(currentLaser.getAngle());
+			float deltaY = -currentLaser.getSpeed() * delta * MathUtils.sinDeg(currentLaser.getAngle());
 
-	        // Move the laser based on calculated values
-	        currentLaser.getSprite().translate(deltaY, deltaX);
+			// Move the laser based on calculated values
+			currentLaser.getSprite().translate(deltaY, deltaX);
 
-	        // Optionally, you can add logic to check if the laser goes off the screen and
-	        // handle it accordingly
-	        if (currentLaser.getSprite().getY() > Gdx.graphics.getHeight() || currentLaser.getSprite().getY() < 0
-	                || currentLaser.getSprite().getX() < 0 || currentLaser.getSprite().getX() > Gdx.graphics.getWidth()) {
-	            iterator.remove(); // Remove the laser if it goes off the screen
-	        }
-	    }
+			// Optionally, you can add logic to check if the laser goes off the screen and
+			// handle it accordingly
+			if (currentLaser.getSprite().getY() > Gdx.graphics.getHeight() || currentLaser.getSprite().getY() < 0
+					|| currentLaser.getSprite().getX() < 0
+					|| currentLaser.getSprite().getX() > Gdx.graphics.getWidth()) {
+				iterator.remove(); // Remove the laser if it goes off the screen
+			}
+		}
 	}
-	
+
 	public ArrayList<Laser> getLasers() {
-        return lasers;
-    }
-	public void setLasers(ArrayList<Laser> updatedLasers) {
-	    lasers = updatedLasers;
+		return lasers;
 	}
-	
+
+
 }

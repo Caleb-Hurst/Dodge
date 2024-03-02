@@ -18,6 +18,7 @@ public class Laser {
 	private float height;
 	private float x;
 	private float y;
+	private float angle;
 
 
 	public void setSize(float width, float height) {
@@ -86,6 +87,14 @@ public class Laser {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+
+	public float getAngle() {
+		return angle;
+	}
+
+	public void setAngle(float angle) {
+		this.angle = angle;
 	}
 	
 

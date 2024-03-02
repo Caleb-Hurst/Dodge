@@ -1,12 +1,15 @@
 package com.dodge.game.service;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 
 public class ObjectManagerService {
-	
+	public ArrayList<Enemy> enemies = new ArrayList<>();
 	//generate any object and position on screen
 	public Rectangle generateGameObject(String name, int height, int width, float x, float y) {
 		Rectangle gameObject = new Rectangle();
@@ -44,6 +47,13 @@ public class ObjectManagerService {
 		laser.setY(playerShip.getY() + playerShip.getHeight());
 	    // Create and return a new player laser
 	    return laser;
+	}
+	
+	public Enemy createEnemy(Ship playerShip) {
+		Enemy enemy = new Enemy();
+		enemy.setAngle(playerShip.getRotation() - 180);
+		enemies.add(enemy);
+		return enemy;
 	}
 	
 }

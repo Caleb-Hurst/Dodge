@@ -12,8 +12,9 @@ import com.dodge.game.domain.Ship;
 public class LaserService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	SoundManagerService soundManagerService = new SoundManagerService();
-	private ArrayList<Laser> lasers = new ArrayList<>();
-	public void shoot(Ship playerShip) {	
+	public ArrayList<Laser> lasers = new ArrayList<>();
+	
+	public ArrayList<Laser> shoot(Ship playerShip) {	
 		Laser laser = objectManagerService.createPlayerLaser(playerShip);
 //		soundManagerService.laser();
 		float spriteCenterX = playerShip.getX() + laser.getSprite().getWidth() / 2;
@@ -29,8 +30,10 @@ public class LaserService {
 		float targetY = spriteBottomY - offsetY; // Subtract offsetY from the bottom Y
 		laser.getSprite().setPosition(targetX, targetY);
 		laser.getSprite().setRotation(playerShip.getRotation());
-		laser.setActive(true);
 		lasers.add(laser);
+		laser.setActive(true);
+		
+		return  lasers;
 	}
 	public void update(float delta, float initialAngle, Laser laser) {
 		Iterator<Laser> iterator = lasers.iterator();
@@ -55,5 +58,8 @@ public class LaserService {
 	public ArrayList<Laser> getLasers() {
         return lasers;
     }
+	public void setLasers(ArrayList<Laser> updatedLasers) {
+	    lasers = updatedLasers;
+	}
 	
 }

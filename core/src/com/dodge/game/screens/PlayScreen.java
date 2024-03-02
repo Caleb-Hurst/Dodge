@@ -24,7 +24,6 @@ public class PlayScreen implements Screen {
 		this.soundManagerService = new SoundManagerService();
 		this.inputHandlerService = new InputHandlerService();
 		this.playerShip = ObjectManagerService.createPlayerShip();
-        this.playerLaser = objectManagerService.createPlayerLaser(playerShip); // Create a new Laser object
 
 		this.spriteBatch = new SpriteBatch();
 	}
@@ -39,8 +38,9 @@ public class PlayScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
-		inputHandlerService.handleInput(delta,playerShip,playerLaser);
+		inputHandlerService.handleArrowInput(delta,playerShip,playerLaser);
 		laserService.update(delta, playerShip.getRotation(),playerLaser);
+		laserService.setLasers(inputHandlerService.handleSpacebarInput(playerShip));
 		spriteBatch.begin();
 		playerShip.draw(spriteBatch);
 		for (Laser laser : laserService.getLasers()) {

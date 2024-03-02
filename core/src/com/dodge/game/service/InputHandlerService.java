@@ -1,5 +1,7 @@
 package com.dodge.game.service;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.dodge.game.domain.Laser;
@@ -10,7 +12,7 @@ public class InputHandlerService {
 	private LaserService laserService = new LaserService();
 	private boolean spaceBarPressedLastFrame = false;
 
-	public void handleInput(float delta, Ship playerShip, Laser laser) {
+	public void handleArrowInput(float delta, Ship playerShip, Laser laser) {
 		float speed = 250 * delta; // Adjust the speed
 		float rotationSpeed = 500;
 		float rotation = (playerShip.getRotation() + 360) % 360;
@@ -37,16 +39,22 @@ public class InputHandlerService {
 	        playerShip.rotate(-rotationSpeed * delta);
 //	        playerLaser.rotate(rotationSpeed * delta);
 	    }
-	    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+	    
+	    
+	}
+	
+	public ArrayList<Laser> handleSpacebarInput(Ship playerShip) {
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 	        if (!spaceBarPressedLastFrame) {
-	            laserService.shoot(playerShip);           
+	            ArrayList<Laser> lasers = laserService.shoot(playerShip);    
+	            return lasers;
 	        }
 	        spaceBarPressedLastFrame = true;
 	    } else {
 	        spaceBarPressedLastFrame = false;
 //	        playerLaser.deactivate();
 	    }
-	    
+		return new ArrayList<>();
 	}
 
 }

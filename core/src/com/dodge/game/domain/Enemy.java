@@ -1,5 +1,6 @@
 package com.dodge.game.domain;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Enemy {
@@ -14,8 +15,9 @@ public class Enemy {
 	public Sprite getSprite() {
 		return sprite;
 	}
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
+	public void setSprite(String texturePath) {
+		  Texture enemyTexture = new Texture(texturePath);
+	        this.sprite = new Sprite(enemyTexture);
 	}
 	public boolean isActive() {
 		return active;

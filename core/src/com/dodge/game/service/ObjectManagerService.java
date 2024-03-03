@@ -55,6 +55,7 @@ public class ObjectManagerService {
 		enemy.setX(0);
 		enemy.setY(0);
 		enemy.setAngle(playerShip.getRotation() - 180);
+		enemy.setActive(true);
 		enemies.add(enemy);
 		return enemy;
 	}

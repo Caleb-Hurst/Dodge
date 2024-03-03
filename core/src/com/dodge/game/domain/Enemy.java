@@ -1,6 +1,7 @@
 package com.dodge.game.domain;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Enemy {
@@ -64,5 +65,9 @@ public class Enemy {
 		this.angle = angle;
 	}
 	
-	
+	public void draw(Batch batch) {
+		if (active) {
+			sprite.draw(batch);
+		}
+	}
 }

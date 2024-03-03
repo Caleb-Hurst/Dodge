@@ -31,12 +31,15 @@ public class PlayScreen implements Screen {
 		this.enemy = new Enemy();
 		
 	}
-
+	public Enemy testEnemy() {
+		return objectManagerService.createEnemy(playerShip);
+	}
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
 		soundManagerService.setVolume(backgroundMusic, .1f);
+		testEnemy();
 	}
 
 	@Override

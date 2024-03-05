@@ -32,6 +32,7 @@ public class HomeScreen implements Screen {
 		this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.batch = new SpriteBatch();
 		this.soundManagerService = new SoundManagerService();
+		
 	}
 	@Override
 	public void show() {

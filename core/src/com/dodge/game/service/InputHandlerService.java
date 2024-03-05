@@ -4,16 +4,19 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 
 public class InputHandlerService {
 
-	public InputHandlerService(LaserService laserService) {
+	public InputHandlerService(LaserService laserService, EnemyService enemyService) {
 		this.laserService = laserService;
+		this.enemyService = enemyService;
 	}
 
 	private LaserService laserService;
+	private EnemyService enemyService;
 	private boolean spaceBarPressedLastFrame = false;
 
 	public void handleArrowInput(float delta, Ship playerShip, Laser laser) {
@@ -33,31 +36,29 @@ public class InputHandlerService {
 			playerShip.move(speed, 0);
 		}
 
-	    if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-	    	System.out.println(rotation);
-	        playerShip.rotate(rotationSpeed * delta);
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			playerShip.rotate(rotationSpeed * delta);
 //	        playerLaser.rotate(rotationSpeed * delta);
-	    }
-	    if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-	    	System.out.println(rotation);
-	        playerShip.rotate(-rotationSpeed * delta);
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			playerShip.rotate(-rotationSpeed * delta);
 //	        playerLaser.rotate(rotationSpeed * delta);
-	    }
-	    
-	    
+		}
+
 	}
-	
+
 	public ArrayList<Laser> handleSpacebarInput(Ship playerShip) {
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-	        if (!spaceBarPressedLastFrame) {
-	            ArrayList<Laser>lasers = laserService.shoot(playerShip);
-	            spaceBarPressedLastFrame = true;
-	            return lasers;
-	        }
-	    } else {
-	        spaceBarPressedLastFrame = false;
-	    }
+			if (!spaceBarPressedLastFrame) {
+				ArrayList<Laser> lasers = laserService.shoot(playerShip);
+				spaceBarPressedLastFrame = true;
+				return lasers;
+			}
+		} else {
+			spaceBarPressedLastFrame = false;
+		}
 		return new ArrayList<>();
 	}
+
 
 }

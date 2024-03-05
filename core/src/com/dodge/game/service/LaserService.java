@@ -23,11 +23,12 @@ public class LaserService {
 		laser.getSprite().setOrigin(laser.getSprite().getWidth() / 2, 0);
 		// Calculate a position relative to the bottom-center of the sprite
 		float offsetX = 25f;
-		// offset from the center along the x-axis */;
+		// offset from the center along the x-axis;
 		float offsetY = -50f;
-		// offset from the bottom along the y-axis */;
+		// offset from the bottom along the y-axis;
 		float targetX = spriteCenterX + offsetX;
-		float targetY = spriteBottomY - offsetY; // Subtract offsetY from the bottom Y
+		// Subtract offsetY from the bottom Y
+		float targetY = spriteBottomY - offsetY; 
 		laser.getSprite().setPosition(targetX, targetY);
 		laser.getSprite().setRotation(playerShip.getRotation());
 		lasers.add(laser);

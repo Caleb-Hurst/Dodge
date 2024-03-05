@@ -3,6 +3,7 @@ package com.dodge.game.domain;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 
 public class Enemy {
 	private Sprite sprite;
@@ -10,9 +11,23 @@ public class Enemy {
 	private float speed;
 	private float width;
 	private float height;
+	private float angle;
 	private float x;
 	private float y;
-	private float angle;
+	private Vector2 direction;
+	
+	public float getX() {
+		return sprite.getX();
+	}
+	public void setX(float x) {
+		this.x = x;
+	}
+	public float getY() {
+		return sprite.getY();
+	}
+	public void setY(float y) {
+		this.y = y;
+	}
 	public Sprite getSprite() {
 		return sprite;
 	}
@@ -20,11 +35,18 @@ public class Enemy {
 		  Texture enemyTexture = new Texture(texturePath);
 	        this.sprite = new Sprite(enemyTexture);
 	}
-	public boolean isActive() {
+	public Boolean getActive() {
 		return active;
 	}
-	public void setActive(boolean active) {
+
+	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public void draw(Batch batch) {
+		if (active) {
+			sprite.draw(batch);
+		}
 	}
 	public float getSpeed() {
 		return speed;
@@ -44,19 +66,8 @@ public class Enemy {
 	public void setHeight(float height) {
 		this.height = height;
 	}
-	public float getX() {
-		return sprite.getY();
-	}
-	public void setX(float x) {
-		this.x = x;
-		sprite.setX(x);
-	}
-	public float getY() {
-		return sprite.getY();
-	}
-	public void setY(float y) {
-		this.y = y;
-		sprite.setY(y);
+	public void setPosition(float x, float y) {
+		sprite.setPosition(x, y);
 	}
 	public float getAngle() {
 		return angle;
@@ -65,9 +76,22 @@ public class Enemy {
 		this.angle = angle;
 	}
 	
-	public void draw(Batch batch) {
-		if (active) {
-			sprite.draw(batch);
-		}
+	
+	public void setSize(float x, float y) {
+		sprite.setSize(x, y);
 	}
+	public Vector2 getDirection() {
+		return direction;
+	}
+	public void setDirection(Vector2 direction) {
+		this.direction = direction;
+	}
+	public void setRotation(float angle) {
+		sprite.setRotation(angle);
+		
+	}
+	public float getRotation() {
+		return sprite.getRotation();
+	}
+	
 }

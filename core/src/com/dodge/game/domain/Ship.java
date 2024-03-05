@@ -9,7 +9,8 @@ public class Ship {
 
 	private Sprite sprite;
 	private Rectangle boundingBox;
-
+	private float x;
+	private float y;
 	public Ship(float x, float y, float width, float height, String texturePath) {
 		Texture shipTexture = new Texture(texturePath);
 		sprite = new Sprite(shipTexture);
@@ -47,6 +48,25 @@ public class Ship {
 
 	public void draw(Batch batch) {
 		sprite.draw(batch);
+	}
+	
+
+	public void setX(float x) {
+		this.x = x;
+		sprite.setX(x);
+	}
+
+	public void setY(float y) {
+		this.y = y;
+		sprite.setY(y);
+	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 
 	public float getX() {

@@ -35,14 +35,14 @@ public class PlayScreen implements Screen {
 		this.playerShip = ObjectManagerService.createPlayerShip();
 		this.spriteBatch = new SpriteBatch();
 		this.viewport = new FitViewport(820, 500);
-		this.enemyService = new EnemyService(laserService);
+		this.enemyService = new EnemyService(laserService, objectManagerService);
 
-        // Apply the viewport to the camera
-        this.viewport.setCamera(new OrthographicCamera());
+		// Apply the viewport to the camera
+		this.viewport.setCamera(new OrthographicCamera());
 
-        // Center the camera on the player ship initially
-        this.viewport.getCamera().position.set(playerShip.getSprite().getX(), playerShip.getSprite().getY(), 0);
-        this.viewport.getCamera().update();
+		// Center the camera on the player ship initially
+		this.viewport.getCamera().position.set(playerShip.getSprite().getX(), playerShip.getSprite().getY(), 0);
+		this.viewport.getCamera().update();
 
 	}
 
@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
 		// TODO Auto-generated method stub
 //		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
 //		soundManagerService.setVolume(backgroundMusic, .1f);
-		enemyService.generateEnemyEvery3Seconds(playerShip,viewport);
+		enemyService.generateEnemyEvery3Seconds(playerShip, viewport);
 	}
 
 	@Override
@@ -59,9 +59,9 @@ public class PlayScreen implements Screen {
 		ScreenUtils.clear(0, 0, 0, 1);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
-		laserService.updatePlayerLaser(delta, playerShip.getRotation());
+		laserService.updatePlayerLaser(delta, playerShip.getRotation(), enemyService.getEnemies());
 		enemyService.updateEnemyShip(delta, playerShip);
-		laserService.updateEnemyLaser(delta);
+
 		spriteBatch.begin();
 
 		playerShip.draw(spriteBatch);
@@ -69,8 +69,13 @@ public class PlayScreen implements Screen {
 			laser.draw(spriteBatch);
 		}
 		playerShip.draw(spriteBatch);
-		for (Laser laser : laserService.getEnemyLasers()) {
-			laser.draw(spriteBatch);
+		for (Enemy enemy : enemyService.getEnemies()) {
+			if (enemy.getLasers() != null) {
+				laserService.updateEnemyLaser(delta, enemy.getLasers());
+				for (Laser laser : enemy.getLasers()) {
+					laser.draw(spriteBatch);
+				}
+			}
 		}
 		for (Enemy enemy : enemyService.getEnemies()) {
 			enemy.draw(spriteBatch);
@@ -83,9 +88,9 @@ public class PlayScreen implements Screen {
 	public void resize(int width, int height) {
 		viewport.update(width, height);
 
-        // Center the camera on the player ship after the resize
-        viewport.getCamera().position.set(playerShip.getSprite().getX(), playerShip.getSprite().getY(), 0);
-        viewport.getCamera().update();
+		// Center the camera on the player ship after the resize
+		viewport.getCamera().position.set(playerShip.getSprite().getX(), playerShip.getSprite().getY(), 0);
+		viewport.getCamera().update();
 	}
 
 	@Override

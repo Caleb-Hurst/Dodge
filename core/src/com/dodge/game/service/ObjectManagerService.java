@@ -13,7 +13,7 @@ import com.dodge.game.domain.Ship;
 
 public class ObjectManagerService {
 	public ArrayList<Enemy> enemies = new ArrayList<>();
-
+	private int x = 1;
 	// generate any object and position on screen
 	public Rectangle generateGameObject(String name, int height, int width, float x, float y) {
 		Rectangle gameObject = new Rectangle();
@@ -71,8 +71,8 @@ public class ObjectManagerService {
 	public Enemy createEnemy(Ship playerShip, Viewport viewport) {
 		Random random = new Random();
 		Enemy enemy = new Enemy();
-		float randomX = random.nextFloat() *  480; // Random number between 480 and 500
-		float randomY = random.nextFloat() *  800; // Random number between 800 and 820
+		float randomX = random.nextFloat() * 800; // Random number between 0 and 480
+		float randomY = random.nextFloat() * 480; // Random number between 0 and 800
 	    enemy.setSprite("enemy-ship.png");
 		float playerShipY = playerShip.getSprite().getY();
 		float playerShipX = playerShip.getSprite().getX();
@@ -80,15 +80,25 @@ public class ObjectManagerService {
 		float enemyShipY = enemy.getSprite().getY();
 		float angleToPlayer = MathUtils.atan2(playerShipY - enemyShipY, playerShipX - enemyShipX) * MathUtils.radiansToDegrees;
 		angleToPlayer = (angleToPlayer + 360) % 360; // Convert negative angles to positive in the range [0, 360)
+		enemy.setLasers(new ArrayList<Laser>());
 		enemy.setAngle(angleToPlayer);
 		enemy.setActive(true);
 		enemy.setSize(70, 60);		
 		enemy.getSprite().setOriginCenter();
 		enemy.setSpeed(100);
+		enemy.setBoundingBox(new Rectangle());
 		// random position for working code 
 //		enemy.getSprite().setOriginBasedPosition(randomX,randomY);
 		// temporary position for dev 
-		enemy.getSprite().setPosition(randomX, randomY);
+		if(x == 1) {
+		enemy.getSprite().setPosition(0, randomY + 20);
+		x++;
+		}else if(x == 2) {
+			enemy.getSprite().setPosition(randomX + 20, 0);
+			x = 1;
+		}
+		System.out.println("WIDTH " + Gdx.graphics.getWidth());
+		System.out.println("HEIGHT " + Gdx.graphics.getHeight());
 		enemies.add(enemy);
 		return enemy;
 	}

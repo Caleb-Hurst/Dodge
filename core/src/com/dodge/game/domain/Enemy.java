@@ -1,8 +1,11 @@
 package com.dodge.game.domain;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Enemy {
@@ -15,7 +18,23 @@ public class Enemy {
 	private float x;
 	private float y;
 	private Vector2 direction;
+	private ArrayList<Laser> lasers;
+	private Rectangle boundingBox;
 	
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
+	public void setBoundingBox(Rectangle boundingBox) {
+		this.boundingBox = boundingBox;
+		boundingBox.width = .8f;
+		boundingBox.height = .8f;
+	}
+	public ArrayList<Laser> getLasers() {
+		return lasers;
+	}
+	public void setLasers(ArrayList<Laser> lasers) {
+		this.lasers = lasers;
+	}
 	public float getX() {
 		return sprite.getX();
 	}

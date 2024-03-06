@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
@@ -13,8 +14,6 @@ public class LaserService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	SoundManagerService soundManagerService = new SoundManagerService();
 	public ArrayList<Laser> playerLasers = new ArrayList<>();
-	public ArrayList<Laser> enemyLasers = new ArrayList<>();
-
 	public ArrayList<Laser> playerShoot(Ship playerShip) {
 		Laser laser = objectManagerService.createPlayerLaser(playerShip);
 		soundManagerService.laser();
@@ -37,6 +36,7 @@ public class LaserService {
 		return playerLasers;
 	}
 	public ArrayList<Laser> enemyShoot(Enemy enemyShip) {
+		if(enemyShip.getSprite().getX() < Gdx.graphics.getWidth()) {
 		Laser laser = objectManagerService.createEnemyLaser(enemyShip);
 		soundManagerService.laser();
 		float spriteCenterX = enemyShip.getX() + laser.getSprite().getWidth() / 2;
@@ -53,14 +53,17 @@ public class LaserService {
 		float targetY = spriteBottomY - offsetY; 
 		laser.getSprite().setPosition(targetX, targetY);
 		laser.getSprite().setRotation(enemyShip.getRotation());
-		enemyLasers.add(laser);
+		enemyShip.getLasers().add(laser);
 		laser.setActive(true);
-		return enemyLasers;
+//		System.out.println(x);
+		return enemyShip.getLasers();
+		}
+		return new ArrayList<>();
 	}
 	
 	
 
-	public void updatePlayerLaser(float delta, float initialAngle) {
+	public void updatePlayerLaser(float delta, float initialAngle, ArrayList<Enemy> enemies) {
 		Iterator<Laser> iterator = playerLasers.iterator();
 		while (iterator.hasNext()) {
 			Laser currentLaser = iterator.next();
@@ -70,7 +73,24 @@ public class LaserService {
 
 			// Move the laser based on calculated values
 			currentLaser.getSprite().translate(deltaY, deltaX);
+			for (Iterator<Enemy> enemyIterator = enemies.iterator(); enemyIterator.hasNext(); ) {
+		        Enemy enemy = enemyIterator.next();
+		        Rectangle enemyBoundingBox = new Rectangle(enemy.getSprite().getBoundingRectangle());
+		     // Adjust the enemy bounding box size as needed
+		     enemyBoundingBox.width *= 0.4f; // Make it 80% of the original width
+		     enemyBoundingBox.height *= 0.4f; // Make it 80% of the original height
+		     Rectangle laserBoundingBox = new Rectangle(currentLaser.getSprite().getBoundingRectangle());
 
+		     if (laserBoundingBox.overlaps(enemyBoundingBox)) {
+		         // Handle collision, e.g., mark the laser and enemy as inactive
+		         currentLaser.setActive(false);
+		         enemy.setActive(false);
+
+		         // Remove objects or add to a list for removal (based on your design)
+		         iterator.remove();
+		         enemyIterator.remove();
+		     }
+		    }
 			// Optionally, you can add logic to check if the laser goes off the screen and
 			// handle it accordingly
 			if (currentLaser.getSprite().getY() > Gdx.graphics.getHeight() || currentLaser.getSprite().getY() < 0
@@ -84,10 +104,7 @@ public class LaserService {
 	public ArrayList<Laser> getPlayerLasers() {
 		return playerLasers;
 	}
-	public ArrayList<Laser> getEnemyLasers() {
-		return enemyLasers;
-	}
-	public void updateEnemyLaser(float delta) {
+	public void updateEnemyLaser(float delta, ArrayList<Laser> enemyLasers) {
 		Iterator<Laser> iterator = enemyLasers.iterator();
 		while (iterator.hasNext()) {
 			Laser currentLaser = iterator.next();

@@ -53,17 +53,26 @@ public class ObjectManagerService {
 		// Create and return a new player laser
 		return laser;
 	}
+	
+	public Laser createEnemyLaser(Enemy enemyShip) {
+		Laser laser = new Laser();
+		laser.setAngle(enemyShip.getRotation());
+		laser.setSprite("laser-2.png");
+		laser.setSpeed(300);
+		laser.setWidth(6);
+		laser.setHeight(40);
+		laser.setSize(6, 40);
+		laser.setX(enemyShip.getX() + enemyShip.getWidth() / 2 - laser.getWidth() / 2);
+		laser.setY(enemyShip.getY() + enemyShip.getHeight());
+		// Create and return a new player laser
+		return laser;
+	}
 
 	public Enemy createEnemy(Ship playerShip, Viewport viewport) {
 		Random random = new Random();
 		Enemy enemy = new Enemy();
-		float test = viewport.getWorldWidth();
-		System.out.println(test);
 		float randomX = random.nextFloat() *  480; // Random number between 480 and 500
 		float randomY = random.nextFloat() *  800; // Random number between 800 and 820
-
-	    System.out.println(randomY);
-	    System.out.println(randomX);
 	    enemy.setSprite("enemy-ship.png");
 		float playerShipY = playerShip.getSprite().getY();
 		float playerShipX = playerShip.getSprite().getX();

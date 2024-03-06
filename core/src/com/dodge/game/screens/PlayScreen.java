@@ -25,7 +25,7 @@ public class PlayScreen implements Screen {
 	private InputHandlerService inputHandlerService;
 	private LaserService laserService;
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
-	private EnemyService enemyService = new EnemyService();
+	private EnemyService enemyService;
 	private Viewport viewport;
 
 	public PlayScreen(DodgeGame game) {
@@ -35,6 +35,7 @@ public class PlayScreen implements Screen {
 		this.playerShip = ObjectManagerService.createPlayerShip();
 		this.spriteBatch = new SpriteBatch();
 		this.viewport = new FitViewport(820, 500);
+		this.enemyService = new EnemyService(laserService);
 
         // Apply the viewport to the camera
         this.viewport.setCamera(new OrthographicCamera());
@@ -48,8 +49,8 @@ public class PlayScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
-		soundManagerService.setVolume(backgroundMusic, .1f);
+//		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
+//		soundManagerService.setVolume(backgroundMusic, .1f);
 		enemyService.generateEnemyEvery3Seconds(playerShip,viewport);
 	}
 
@@ -58,12 +59,17 @@ public class PlayScreen implements Screen {
 		ScreenUtils.clear(0, 0, 0, 1);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
-		laserService.update(delta, playerShip.getRotation());
-		enemyService.update(delta, playerShip);
+		laserService.updatePlayerLaser(delta, playerShip.getRotation());
+		enemyService.updateEnemyShip(delta, playerShip);
+		laserService.updateEnemyLaser(delta);
 		spriteBatch.begin();
 
 		playerShip.draw(spriteBatch);
-		for (Laser laser : laserService.getLasers()) {
+		for (Laser laser : laserService.getPlayerLasers()) {
+			laser.draw(spriteBatch);
+		}
+		playerShip.draw(spriteBatch);
+		for (Laser laser : laserService.getEnemyLasers()) {
 			laser.draw(spriteBatch);
 		}
 		for (Enemy enemy : enemyService.getEnemies()) {

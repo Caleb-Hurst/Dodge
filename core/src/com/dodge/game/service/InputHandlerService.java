@@ -22,7 +22,6 @@ public class InputHandlerService {
 	public void handleArrowInput(float delta, Ship playerShip, Laser laser) {
 		float speed = 250 * delta; // Adjust the speed
 		float rotationSpeed = 500;
-		float rotation = (playerShip.getRotation() + 360) % 360;
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			playerShip.move(0, speed);
 		}
@@ -50,7 +49,7 @@ public class InputHandlerService {
 	public ArrayList<Laser> handleSpacebarInput(Ship playerShip) {
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			if (!spaceBarPressedLastFrame) {
-				ArrayList<Laser> lasers = laserService.shoot(playerShip);
+				ArrayList<Laser> lasers = laserService.playerShoot(playerShip);
 				spaceBarPressedLastFrame = true;
 				return lasers;
 			}

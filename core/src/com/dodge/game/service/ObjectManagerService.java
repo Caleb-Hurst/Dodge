@@ -95,15 +95,22 @@ public class ObjectManagerService {
 		// random position for working code
 //		enemy.getSprite().setOriginBasedPosition(randomX,randomY);
 		// temporary position for dev
-		if (x == 1) {
-			enemy.getSprite().setPosition(0, randomY + 20);
-			x++;
-		} else if (x == 2) {
-			enemy.getSprite().setPosition(randomX + 20, 0);
-			x = 1;
-		}
-		System.out.println("WIDTH " + Gdx.graphics.getWidth());
-		System.out.println("HEIGHT " + Gdx.graphics.getHeight());
+		switch (x) {
+        case 1:
+            enemy.getSprite().setPosition(0, randomY + 20);
+            break;
+        case 2:
+            enemy.getSprite().setPosition(randomX + 20, 0);
+            break;
+        case 3:
+            enemy.getSprite().setPosition(Gdx.graphics.getWidth(), randomY + 20);
+            break;
+        case 4:
+            enemy.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight());
+            break;
+    }
+    
+    x = (x % 4) + 1;
 		enemies.add(enemy);
 		return enemy;
 	}
@@ -140,7 +147,6 @@ public class ObjectManagerService {
 	            break;
 	    }
 	    
-	    // Increment x for the next asteroid
 	    x = (x % 4) + 1;
 
 	    // Set angle towards player ship
@@ -150,9 +156,9 @@ public class ObjectManagerService {
 	    float angleDeg = MathUtils.radiansToDegrees * angleRad + 270f;
 	    
 	    asteroid.setAngle(angleDeg);
-	    asteroid.setRotation(angleDeg - 44); // Optional: Adjust the initial rotation
+	    asteroid.setRotation(angleDeg - 45); 
 	    asteroid.getSprite().setSize(70, 70);
-	    asteroid.setSpeed(100);
+	    asteroid.setSpeed(170);
 	    asteroid.getSprite().setOriginCenter();
 	    
 	    return asteroid;

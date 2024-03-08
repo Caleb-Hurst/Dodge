@@ -74,7 +74,6 @@ public class LaserService {
 			// Calculate the movement along x and y axes based on the initial angle
 			float deltaX = currentLaser.getSpeed() * delta * MathUtils.cosDeg(currentLaser.getAngle());
 			float deltaY = -currentLaser.getSpeed() * delta * MathUtils.sinDeg(currentLaser.getAngle());
-
 			// Move the laser based on calculated values
 			currentLaser.getSprite().translate(deltaY, deltaX);
 			for (Iterator<Enemy> enemyIterator = enemies.iterator(); enemyIterator.hasNext();) {
@@ -104,7 +103,6 @@ public class LaserService {
 					explosion.getSprite().setPosition(oldShipX, oldShipY);
 					explosion.setActive(true);
 					holdExplosionOnScreen(explosion);
-		  	 		
 				}
 			}
 			// Optionally, you can add logic to check if the laser goes off the screen and

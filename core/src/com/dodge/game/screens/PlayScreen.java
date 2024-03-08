@@ -54,14 +54,10 @@ public class PlayScreen implements Screen {
 		// TODO Auto-generated method stub
 //		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
 //		soundManagerService.setVolume(backgroundMusic, .1f);
-		enemyService.generateEnemyEvery3Seconds(playerShip);
+		
 		shapeRenderer = new ShapeRenderer();
 		font.getData().setScale(5);
-		asteroidService.generateAsteroidEvery10Seconds(playerShip);
 		
-		
-		
-
 	}
 
 	@Override
@@ -71,7 +67,11 @@ public class PlayScreen implements Screen {
 		inputHandlerService.handleSpacebarInput(playerShip);
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);
 		enemyService.updateEnemyShip(delta, playerShip);
-		asteroidService.updateAsteroids(delta, playerShip);
+		asteroidService.updateAsteroids(delta, playerShip,enemyService.getEnemies(), explosion);
+		asteroidService.generateAsteroidEvery10Seconds(playerShip);
+		enemyService.generateEnemyEveryWithIncrementSeconds(playerShip);
+		enemyService.increaseIntensity();
+		asteroidService.increaseIntensity();
 		spriteBatch.begin();
 
 		// Draw the score

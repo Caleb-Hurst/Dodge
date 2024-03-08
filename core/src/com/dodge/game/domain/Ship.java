@@ -11,6 +11,7 @@ public class Ship {
 	private Rectangle boundingBox;
 	private float x;
 	private float y;
+	private int score = 0;
 	public Ship(float x, float y, float width, float height, String texturePath) {
 		Texture shipTexture = new Texture(texturePath);
 		sprite = new Sprite(shipTexture);
@@ -21,6 +22,14 @@ public class Ship {
 		sprite.setOriginCenter();
 		// maybe use for collision detection later on HERE
 		boundingBox = new Rectangle(x, y, width, height);
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public void setPosition(float x, float y) {

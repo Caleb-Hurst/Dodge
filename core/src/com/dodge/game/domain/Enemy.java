@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Enemy {
 	private Sprite sprite;
 	private boolean active = false;
+	private boolean isOverlaping = false;
+	private boolean delay = false;
 	private float speed;
 	private float width;
 	private float height;
@@ -21,6 +23,18 @@ public class Enemy {
 	private ArrayList<Laser> lasers;
 	private Rectangle boundingBox;
 	
+	public boolean isDelay() {
+		return delay;
+	}
+	public void setDelay(boolean delay) {
+		this.delay = delay;
+	}
+	public boolean isOverlaping() {
+		return isOverlaping;
+	}
+	public void setOverlaping(boolean isOverlaping) {
+		this.isOverlaping = isOverlaping;
+	}
 	public Rectangle getBoundingBox() {
 		return boundingBox;
 	}

@@ -1,9 +1,12 @@
 package com.dodge.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -16,6 +19,7 @@ import com.dodge.game.service.InputHandlerService;
 import com.dodge.game.service.LaserService;
 import com.dodge.game.service.ObjectManagerService;
 import com.dodge.game.service.SoundManagerService;
+import com.dodge.game.utils.FileUtil;
 
 public class PlayScreen implements Screen {
 	private SoundManagerService soundManagerService;
@@ -26,23 +30,18 @@ public class PlayScreen implements Screen {
 	private LaserService laserService;
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private EnemyService enemyService;
-	private Viewport viewport;
-
+	ShapeRenderer shapeRenderer;
+	BitmapFont font = new BitmapFont();
+	private int score;
+	// move this to constants class
+	private static final float TOP_AREA_HEIGHT = 500f;
 	public PlayScreen(DodgeGame game) {
 		this.laserService = new LaserService();
 		this.soundManagerService = new SoundManagerService();
 		this.inputHandlerService = new InputHandlerService(laserService, enemyService);
 		this.playerShip = ObjectManagerService.createPlayerShip();
 		this.spriteBatch = new SpriteBatch();
-		this.viewport = new FitViewport(820, 500);
 		this.enemyService = new EnemyService(laserService, objectManagerService);
-
-		// Apply the viewport to the camera
-		this.viewport.setCamera(new OrthographicCamera());
-
-		// Center the camera on the player ship initially
-		this.viewport.getCamera().position.set(playerShip.getSprite().getX(), playerShip.getSprite().getY(), 0);
-		this.viewport.getCamera().update();
 
 	}
 
@@ -51,7 +50,12 @@ public class PlayScreen implements Screen {
 		// TODO Auto-generated method stub
 //		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
 //		soundManagerService.setVolume(backgroundMusic, .1f);
-		enemyService.generateEnemyEvery3Seconds(playerShip, viewport);
+		enemyService.generateEnemyEvery3Seconds(playerShip);
+		shapeRenderer = new ShapeRenderer();
+		font.getData().setScale(5);
+		
+		
+
 	}
 
 	@Override
@@ -59,11 +63,13 @@ public class PlayScreen implements Screen {
 		ScreenUtils.clear(0, 0, 0, 1);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
-		laserService.updatePlayerLaser(delta, playerShip.getRotation(), enemyService.getEnemies());
+		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies());
 		enemyService.updateEnemyShip(delta, playerShip);
 
 		spriteBatch.begin();
 
+		// Draw the score
+		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);
 		playerShip.draw(spriteBatch);
 		for (Laser laser : laserService.getPlayerLasers()) {
 			laser.draw(spriteBatch);
@@ -86,11 +92,6 @@ public class PlayScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width, height);
-
-		// Center the camera on the player ship after the resize
-		viewport.getCamera().position.set(playerShip.getSprite().getX(), playerShip.getSprite().getY(), 0);
-		viewport.getCamera().update();
 	}
 
 	@Override

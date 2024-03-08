@@ -68,7 +68,7 @@ public class ObjectManagerService {
 		return laser;
 	}
 
-	public Enemy createEnemy(Ship playerShip, Viewport viewport) {
+	public Enemy createEnemy(Ship playerShip) {
 		Random random = new Random();
 		Enemy enemy = new Enemy();
 		float randomX = random.nextFloat() * 800; // Random number between 0 and 480

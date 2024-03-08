@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.dodge.game.domain.Asteroid;
 import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
+import com.dodge.game.service.AsteroidService;
 import com.dodge.game.service.EnemyService;
 import com.dodge.game.service.InputHandlerService;
 import com.dodge.game.service.LaserService;
@@ -29,6 +31,8 @@ public class PlayScreen implements Screen {
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont font = new BitmapFont();
 	private Explosion explosion;
+	private AsteroidService asteroidService;
+	private Asteroid asteroid;
 	
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
@@ -40,6 +44,8 @@ public class PlayScreen implements Screen {
 		this.spriteBatch = new SpriteBatch();
 		this.enemyService = new EnemyService(laserService, objectManagerService);
 		this.explosion = ObjectManagerService.createExplosion();
+		this.asteroidService = new AsteroidService();
+		this.asteroid = objectManagerService.createAsteroid(playerShip);
 
 	}
 	
@@ -51,6 +57,8 @@ public class PlayScreen implements Screen {
 		enemyService.generateEnemyEvery3Seconds(playerShip);
 		shapeRenderer = new ShapeRenderer();
 		font.getData().setScale(5);
+		asteroidService.generateAsteroidEvery10Seconds(playerShip);
+		
 		
 		
 
@@ -63,7 +71,7 @@ public class PlayScreen implements Screen {
 		inputHandlerService.handleSpacebarInput(playerShip);
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);
 		enemyService.updateEnemyShip(delta, playerShip);
-
+		asteroidService.updateAsteroids(delta, playerShip);
 		spriteBatch.begin();
 
 		// Draw the score
@@ -85,10 +93,12 @@ public class PlayScreen implements Screen {
 		for (Enemy enemy : enemyService.getEnemies()) {
 			enemy.draw(spriteBatch);
 		}
+		for (Asteroid asteroid : asteroidService.getAsteroids()) {
+			asteroid.draw(spriteBatch);
+		}
 		explosion.draw(spriteBatch);
-		
+		asteroid.draw(spriteBatch);
 		spriteBatch.end();
-
 	}
 
 	@Override

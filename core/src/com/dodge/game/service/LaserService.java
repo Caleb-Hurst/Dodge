@@ -140,7 +140,7 @@ public class LaserService {
 					|| currentLaser.getSprite().getX() < 0
 					|| currentLaser.getSprite().getX() > Gdx.graphics.getWidth()) {
 				iterator.remove(); // Remove the laser if it goes off the screen
-				System.out.println("something was removed");
+				
 			}
 		}
 	}

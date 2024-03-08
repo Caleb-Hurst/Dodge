@@ -33,12 +33,12 @@ public class EnemyService {
 					createEnemies(playerShip);
 				}
 			}
-		}, 0, 2);
+		}, 0, 3);
 
 	}
 
 	private float generateRandomDelay() {
-		return 2 + random.nextFloat() * 3; // Generates a random float between 2 and 5
+		return 2 + random.nextFloat() * 3; 
 	}
 
 	public Enemy shootLaserEvery3Seconds(Enemy enemy) {

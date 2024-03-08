@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dodge.game.domain.Enemy;
+import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Ship;
 
 public class EnemyService {
@@ -126,6 +126,9 @@ public class EnemyService {
 
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
+	}
+	public Explosion getExplosion() {
+		return new Explosion();
 	}
 
 }

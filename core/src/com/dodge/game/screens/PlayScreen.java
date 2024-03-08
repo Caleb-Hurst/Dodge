@@ -2,15 +2,12 @@ package com.dodge.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dodge.game.domain.Enemy;
+import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
@@ -19,7 +16,6 @@ import com.dodge.game.service.InputHandlerService;
 import com.dodge.game.service.LaserService;
 import com.dodge.game.service.ObjectManagerService;
 import com.dodge.game.service.SoundManagerService;
-import com.dodge.game.utils.FileUtil;
 
 public class PlayScreen implements Screen {
 	private SoundManagerService soundManagerService;
@@ -30,9 +26,10 @@ public class PlayScreen implements Screen {
 	private LaserService laserService;
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private EnemyService enemyService;
-	ShapeRenderer shapeRenderer;
-	BitmapFont font = new BitmapFont();
-	private int score;
+	private ShapeRenderer shapeRenderer;
+	private BitmapFont font = new BitmapFont();
+	private Explosion explosion;
+	
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
 	public PlayScreen(DodgeGame game) {
@@ -42,9 +39,10 @@ public class PlayScreen implements Screen {
 		this.playerShip = ObjectManagerService.createPlayerShip();
 		this.spriteBatch = new SpriteBatch();
 		this.enemyService = new EnemyService(laserService, objectManagerService);
+		this.explosion = ObjectManagerService.createExplosion();
 
 	}
-
+	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
@@ -63,7 +61,7 @@ public class PlayScreen implements Screen {
 		ScreenUtils.clear(0, 0, 0, 1);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
-		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies());
+		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);
 		enemyService.updateEnemyShip(delta, playerShip);
 
 		spriteBatch.begin();
@@ -71,6 +69,7 @@ public class PlayScreen implements Screen {
 		// Draw the score
 		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);
 		playerShip.draw(spriteBatch);
+		
 		for (Laser laser : laserService.getPlayerLasers()) {
 			laser.draw(spriteBatch);
 		}
@@ -86,6 +85,8 @@ public class PlayScreen implements Screen {
 		for (Enemy enemy : enemyService.getEnemies()) {
 			enemy.draw(spriteBatch);
 		}
+		explosion.draw(spriteBatch);
+		
 		spriteBatch.end();
 
 	}

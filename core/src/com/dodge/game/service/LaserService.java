@@ -7,7 +7,9 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Timer;
 import com.dodge.game.domain.Enemy;
+import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 
@@ -15,7 +17,6 @@ public class LaserService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	SoundManagerService soundManagerService = new SoundManagerService();
 	public ArrayList<Laser> playerLasers = new ArrayList<>();
-
 	public ArrayList<Laser> playerShoot(Ship playerShip) {
 		Laser laser = objectManagerService.createPlayerLaser(playerShip);
 		soundManagerService.laser();
@@ -64,7 +65,7 @@ public class LaserService {
 		return new ArrayList<>();
 	}
 
-	public void updatePlayerLaser(float delta, Ship playerShip, ArrayList<Enemy> enemies) {
+	public void updatePlayerLaser(float delta, Ship playerShip, ArrayList<Enemy> enemies, Explosion explosion) {
 		int x = playerShip.getScore();
 		Iterator<Laser> iterator = playerLasers.iterator();
 		List<Laser> lasersToRemove = new ArrayList<>();
@@ -95,7 +96,14 @@ public class LaserService {
 						lasersToRemove.add(currentLaser);
 					}
 					x++;
+					float oldShipX = enemy.getSprite().getX();
+					float oldShipY = enemy.getSprite().getY();
+					enemy.getSprite().getY();
 					enemyIterator.remove();
+					soundManagerService.explosion();
+					explosion.getSprite().setPosition(oldShipX, oldShipY);
+					explosion.setActive(true);
+					holdExplosionOnScreen(explosion);
 		  	 		
 				}
 			}
@@ -135,6 +143,16 @@ public class LaserService {
 				System.out.println("something was removed");
 			}
 		}
+	}
+	public void holdExplosionOnScreen(Explosion explosion) {
+
+		Timer.schedule(new Timer.Task() {
+			@Override
+			public void run() {
+				explosion.setActive(false);
+			}
+		}, 1);
+
 	}
 
 }

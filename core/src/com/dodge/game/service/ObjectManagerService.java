@@ -6,8 +6,8 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dodge.game.domain.Enemy;
+import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 
@@ -101,6 +101,14 @@ public class ObjectManagerService {
 		System.out.println("HEIGHT " + Gdx.graphics.getHeight());
 		enemies.add(enemy);
 		return enemy;
+	}
+	
+	public static Explosion createExplosion() {
+		Explosion explosion = new Explosion();
+		explosion.setSprite("explosion.png");
+		explosion.setSize(70, 60);
+		return explosion;
+		
 	}
 
 }

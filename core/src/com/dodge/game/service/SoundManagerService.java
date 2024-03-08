@@ -47,5 +47,9 @@ public class SoundManagerService {
 		sound.play(0.2f);
 		
 	}
+	public void explosion() {
+		Sound sound = Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
+		sound.play(0.1f);
+	}
 
 }

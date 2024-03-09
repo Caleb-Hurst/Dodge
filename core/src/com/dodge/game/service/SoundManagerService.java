@@ -33,7 +33,7 @@ public class SoundManagerService {
 		backgroundMusic = loadMusic(fileName);
 //		// start playback
 		backgroundMusic.setLooping(true);
-		backgroundMusic.setVolume(6f);
+		backgroundMusic.setVolume(4f);
 		backgroundMusic.play();
 		return backgroundMusic;
 	}
@@ -58,7 +58,7 @@ public class SoundManagerService {
 	}
 	public void enemyLaser() {
 		Sound sound = Gdx.audio.newSound(Gdx.files.internal("enemyLaser3.mp3"));
-		sound.play(0.07f);
+		sound.play(0.03f);
 
 	}
 
@@ -79,7 +79,7 @@ public class SoundManagerService {
         // Check if the score is a multiple of 10 and if the sound hasn't been played yet for this increment
         if (score % 10 == 0 && score != lastMultipleOfTenScore && !isMultipleOfTenSoundPlayed) {
             Sound sound = Gdx.audio.newSound(Gdx.files.internal("multipleOfTen.mp3"));
-            sound.play(.9f);
+            sound.play(.3f);
 
             // Set the lastMultipleOfTenScore to the current score to avoid playing the sound again for the same increment
             lastMultipleOfTenScore = score;
@@ -93,7 +93,7 @@ public class SoundManagerService {
                 public void run() {
                     isMultipleOfTenSoundPlayed = false;
                 }
-            }, .4f);
+            }, .7f);
         }
     }
 

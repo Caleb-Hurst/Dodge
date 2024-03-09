@@ -42,7 +42,7 @@ public class LaserService {
 	public ArrayList<Laser> enemyShoot(Enemy enemyShip) {
 		if (enemyShip.getSprite().getX() < Gdx.graphics.getWidth()) {
 			Laser laser = objectManagerService.createEnemyLaser(enemyShip);
-			soundManagerService.laser();
+			soundManagerService.enemyLaser();
 			float spriteCenterX = enemyShip.getX() + laser.getSprite().getWidth() / 2;
 			float spriteBottomY = enemyShip.getY() + -20f; // Change to bottom
 			// Set the origin to the bottom-center of the sprite

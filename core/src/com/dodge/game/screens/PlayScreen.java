@@ -2,6 +2,7 @@ package com.dodge.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -52,8 +53,8 @@ public class PlayScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-//		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
-//		soundManagerService.setVolume(backgroundMusic, .1f);
+		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
+		soundManagerService.setVolume(backgroundMusic, .1f);
 		
 		shapeRenderer = new ShapeRenderer();
 		font.getData().setScale(5);

@@ -17,7 +17,7 @@ public class AsteroidService {
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private SoundManagerService soundManagerService = new SoundManagerService();
-	private int x = 5;
+	private int x = 12;
 	private boolean isAsteroidTimerActive = true;
 	private boolean isGameTimerActive = true;
 
@@ -36,7 +36,7 @@ public class AsteroidService {
 					isGameTimerActive = true;
 
 				}
-			}, 15);
+			},  15);
 		}
 	}
 
@@ -46,10 +46,18 @@ public class AsteroidService {
 			Timer.schedule(new Timer.Task() {
 				@Override
 				public void run() {
-					Asteroid asteroid = objectManagerService.createAsteroid(playerShip);
-					asteroid.setActive(true);
-					asteroids.add(asteroid);
-					isAsteroidTimerActive = true;
+					
+					soundManagerService.asteroid();
+					Timer.schedule(new Timer.Task() {
+						@Override
+						public void run() {
+							Asteroid asteroid = objectManagerService.createAsteroid(playerShip);
+							asteroid.setActive(true);
+							asteroids.add(asteroid);
+							isAsteroidTimerActive = true;
+						}
+					}, 1);
+					
 				}
 			}, x);
 		}
@@ -105,6 +113,7 @@ public class AsteroidService {
 				iterator.remove(); // Remove the asteroid if it goes off the screen
 			}
 		}
+		asteroids.removeAll(asteroidsToRemove);
 	}
 	public void holdExplosionOnScreen(Explosion explosion) {
 

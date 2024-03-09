@@ -25,6 +25,7 @@ public class SoundManagerService {
 		backgroundMusic = loadMusic(fileName);		
 //		// start playback
 		backgroundMusic.setLooping(true);
+		backgroundMusic.setVolume(4f);
 		backgroundMusic.play();
 		return backgroundMusic;
 	}
@@ -50,6 +51,12 @@ public class SoundManagerService {
 	public void explosion() {
 		Sound sound = Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
 		sound.play(0.1f);
+	}
+
+	public void asteroid() {
+		Sound sound = Gdx.audio.newSound(Gdx.files.internal("asteroid.mp3"));
+		sound.play(0.09f);
+		
 	}
 
 }

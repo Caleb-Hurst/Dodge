@@ -33,7 +33,7 @@ public class SoundManagerService {
 		backgroundMusic = loadMusic(fileName);
 //		// start playback
 		backgroundMusic.setLooping(true);
-		backgroundMusic.setVolume(4f);
+		backgroundMusic.setVolume(6f);
 		backgroundMusic.play();
 		return backgroundMusic;
 	}
@@ -93,7 +93,7 @@ public class SoundManagerService {
                 public void run() {
                     isMultipleOfTenSoundPlayed = false;
                 }
-            }, .7f);
+            }, .4f);
         }
     }
 

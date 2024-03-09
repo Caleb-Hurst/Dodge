@@ -17,7 +17,7 @@ public class AsteroidService {
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private SoundManagerService soundManagerService = new SoundManagerService();
-	private int x = 12;
+	private int x = 4;
 	private boolean isAsteroidTimerActive = true;
 	private boolean isGameTimerActive = true;
 

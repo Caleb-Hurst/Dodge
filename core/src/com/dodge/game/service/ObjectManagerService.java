@@ -62,7 +62,7 @@ public class ObjectManagerService {
 		Laser laser = new Laser();
 		laser.setAngle(enemyShip.getRotation());
 		laser.setSprite("laser-2.png");
-		laser.setSpeed(200);
+		laser.setSpeed(400);
 		laser.setWidth(6);
 		laser.setHeight(40);
 		laser.setSize(6, 40);
@@ -90,7 +90,7 @@ public class ObjectManagerService {
 		enemy.setActive(true);
 		enemy.setSize(70, 60);
 		enemy.getSprite().setOriginCenter();
-		enemy.setSpeed(100);
+		enemy.setSpeed(200);
 		enemy.setBoundingBox(new Rectangle());
 		// random position for working code
 //		enemy.getSprite().setOriginBasedPosition(randomX,randomY);

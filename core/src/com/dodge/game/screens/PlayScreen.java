@@ -3,6 +3,7 @@ package com.dodge.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,6 +20,8 @@ import com.dodge.game.service.InputHandlerService;
 import com.dodge.game.service.LaserService;
 import com.dodge.game.service.ObjectManagerService;
 import com.dodge.game.service.SoundManagerService;
+import com.dodge.game.service.TextService;
+import com.dodge.game.utils.MathUtil;
 
 public class PlayScreen implements Screen {
 	private SoundManagerService soundManagerService;
@@ -34,7 +37,8 @@ public class PlayScreen implements Screen {
 	private Explosion explosion;
 	private AsteroidService asteroidService;
 	private Asteroid asteroid;
-	
+	private MathUtil mathUtil;
+	private TextService textService = new TextService();
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
 	public PlayScreen(DodgeGame game) {
@@ -47,6 +51,7 @@ public class PlayScreen implements Screen {
 		this.explosion = ObjectManagerService.createExplosion();
 		this.asteroidService = new AsteroidService();
 		this.asteroid = objectManagerService.createAsteroid(playerShip);
+		this.mathUtil = new MathUtil();
 
 	}
 	
@@ -73,8 +78,11 @@ public class PlayScreen implements Screen {
 		enemyService.generateEnemyEveryWithIncrementSeconds(playerShip);
 		enemyService.increaseIntensity();
 		asteroidService.increaseIntensity();
+		mathUtil.isScoreMultipleOfTen(playerShip);
+		soundManagerService.isMultipleOfTen(playerShip);
 		spriteBatch.begin();
-
+		textService.flashColors(playerShip, font);
+		
 		// Draw the score
 		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);
 		playerShip.draw(spriteBatch);
@@ -98,7 +106,6 @@ public class PlayScreen implements Screen {
 			asteroid.draw(spriteBatch);
 		}
 		explosion.draw(spriteBatch);
-		asteroid.draw(spriteBatch);
 		spriteBatch.end();
 	}
 

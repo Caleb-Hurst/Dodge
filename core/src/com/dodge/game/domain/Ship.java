@@ -12,6 +12,7 @@ public class Ship {
 	private float x;
 	private float y;
 	private int score = 0;
+	private boolean isMultipleOfTen = false;
 	public Ship(float x, float y, float width, float height, String texturePath) {
 		Texture shipTexture = new Texture(texturePath);
 		sprite = new Sprite(shipTexture);
@@ -109,5 +110,14 @@ public class Ship {
 	public float getOriginY() {
 		return sprite.getOriginY();
 	}
+
+	public boolean isMultipleOfTen() {
+		return isMultipleOfTen;
+	}
+
+	public void setMultipleOfTen(boolean isMultipleOfTen) {
+		this.isMultipleOfTen = isMultipleOfTen;
+	}
+	
 
 }

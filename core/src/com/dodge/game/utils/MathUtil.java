@@ -1,11 +1,35 @@
 package com.dodge.game.utils;
 
+import com.badlogic.gdx.utils.Timer;
+import com.dodge.game.domain.Ship;
+
 public class MathUtil {
-	
-	
-	public static float angleBetweenPoints(float x1, float y1, float x2, float y2) {
-		float angle = (float) Math.toDegrees(Math.atan2(y2 - y1, x2 - x1));
-		// Ensure the angle is in the range [0, 360)
-		return (angle + 360) % 360;
+	private Boolean isTimerDone = true;
+
+	public int isScoreMultipleOfTen(Ship playerShip) {
+
+		if (!playerShip.isMultipleOfTen()) {
+			if (isTimerDone) {
+				isTimerDone = false;
+				int score = playerShip.getScore();
+				if (score % 10 == 0 && score != 0) {
+					playerShip.setMultipleOfTen(true);
+
+					Timer.schedule(new Timer.Task() {
+						@Override
+						public void run() {
+							playerShip.setMultipleOfTen(false);
+							System.out.println("IT WORKED");
+							isTimerDone = true;
+
+						}
+					}, 4);
+				} else {
+					playerShip.setMultipleOfTen(false);
+				}
+				return score;
+			}
+		}
+		return 0;
 	}
 }

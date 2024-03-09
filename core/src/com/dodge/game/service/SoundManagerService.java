@@ -57,8 +57,8 @@ public class SoundManagerService {
 
 	}
 	public void enemyLaser() {
-		Sound sound = Gdx.audio.newSound(Gdx.files.internal("enemyLaser.mp3"));
-		sound.play(0.2f);
+		Sound sound = Gdx.audio.newSound(Gdx.files.internal("enemyLaser3.mp3"));
+		sound.play(0.07f);
 
 	}
 

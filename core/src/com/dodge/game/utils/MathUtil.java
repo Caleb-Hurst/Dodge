@@ -9,10 +9,11 @@ public class MathUtil {
 	public int isScoreMultipleOfTen(Ship playerShip) {
 
 		if (!playerShip.isMultipleOfTen()) {
-			if (isTimerDone) {
-				isTimerDone = false;
-				int score = playerShip.getScore();
-				if (score % 10 == 0 && score != 0) {
+
+			int score = playerShip.getScore();
+			if (score % 10 == 0 && score != 0) {
+				if (isTimerDone) {
+					isTimerDone = false;
 					playerShip.setMultipleOfTen(true);
 
 					Timer.schedule(new Timer.Task() {

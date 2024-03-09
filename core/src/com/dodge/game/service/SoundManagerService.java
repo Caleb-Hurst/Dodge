@@ -11,6 +11,9 @@ import com.dodge.game.domain.Ship;
 public class SoundManagerService {
 	private Music backgroundMusic;
 	private boolean isMultipleOfTenSoundPlayed = false;
+	private int score;
+	private int lastMultipleOfTenScore = 0;
+
 	public Texture loadImage(String fileName) {
 		Texture texture = new Texture(Gdx.files.internal(fileName));
 		return texture;
@@ -65,18 +68,28 @@ public class SoundManagerService {
 
 	}
 
-	 public void isMultipleOfTen(Ship playerShip) {
-	        if (playerShip.isMultipleOfTen() && !isMultipleOfTenSoundPlayed) {
-	            Sound sound = Gdx.audio.newSound(Gdx.files.internal("multipleOfTen.mp3"));
-	            sound.play(1.3f);
-	            isMultipleOfTenSoundPlayed = true;
-	            Timer.schedule(new Timer.Task() {
-					@Override
-					public void run() {
-						isMultipleOfTenSoundPlayed = false;
-					}
-				}, 3);
-	        }
-	    }
+	public void isMultipleOfTen(Ship playerShip) {
+        int score = playerShip.getScore();
+
+        // Check if the score is a multiple of 10 and if the sound hasn't been played yet for this increment
+        if (score % 10 == 0 && score != lastMultipleOfTenScore && !isMultipleOfTenSoundPlayed) {
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal("multipleOfTen.mp3"));
+            sound.play(.9f);
+
+            // Set the lastMultipleOfTenScore to the current score to avoid playing the sound again for the same increment
+            lastMultipleOfTenScore = score;
+
+            // Set the flag to true to indicate that the sound has been played
+            isMultipleOfTenSoundPlayed = true;
+
+            // Schedule a task to reset the flag after a delay (3 seconds in this case)
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    isMultipleOfTenSoundPlayed = false;
+                }
+            }, .7f);
+        }
+    }
 
 }

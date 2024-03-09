@@ -62,6 +62,7 @@ public class AsteroidService {
 			}, x);
 		}
 	}
+	
 
 	public void updateAsteroids(float delta, Ship playerShip, ArrayList<Enemy> enemies, Explosion explosion) {
 		Iterator<Asteroid> iterator = asteroids.iterator();

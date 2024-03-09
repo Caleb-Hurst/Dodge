@@ -78,8 +78,16 @@ public class SoundManagerService {
 
         // Check if the score is a multiple of 10 and if the sound hasn't been played yet for this increment
         if (score % 10 == 0 && score != lastMultipleOfTenScore && !isMultipleOfTenSoundPlayed) {
-            Sound sound = Gdx.audio.newSound(Gdx.files.internal("multipleOfTen.mp3"));
-            sound.play(.07f);
+            Sound levelUpSound = Gdx.audio.newSound(Gdx.files.internal("multipleOfTen.mp3"));
+            levelUpSound.play(.07f);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                	 Sound nextSound = Gdx.audio.newSound(Gdx.files.internal("countdown.mp3"));
+                     nextSound.play(.07f);
+                }
+            }, 1f);
+           
 
             // Set the lastMultipleOfTenScore to the current score to avoid playing the sound again for the same increment
             lastMultipleOfTenScore = score;

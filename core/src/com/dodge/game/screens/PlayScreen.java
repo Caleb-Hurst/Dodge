@@ -37,6 +37,7 @@ public class PlayScreen implements Screen {
 	private Explosion explosion;
 	private AsteroidService asteroidService;
 	private Asteroid asteroid;
+	private Asteroid megaAsteroid;
 	private MathUtil mathUtil;
 	private TextService textService = new TextService();
 	// move this to constants class
@@ -51,6 +52,7 @@ public class PlayScreen implements Screen {
 		this.explosion = ObjectManagerService.createExplosion();
 		this.asteroidService = new AsteroidService();
 		this.asteroid = objectManagerService.createAsteroid(playerShip);
+		this.megaAsteroid = objectManagerService.createMegaAsteroid(playerShip);
 		this.mathUtil = new MathUtil();
 
 	}
@@ -58,8 +60,8 @@ public class PlayScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
-		soundManagerService.setVolume(backgroundMusic, .1f);
+//		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
+//		soundManagerService.setVolume(backgroundMusic, .1f);
 		
 		shapeRenderer = new ShapeRenderer();
 		font.getData().setScale(5);
@@ -106,6 +108,7 @@ public class PlayScreen implements Screen {
 			asteroid.draw(spriteBatch);
 		}
 		explosion.draw(spriteBatch);
+		megaAsteroid.draw(spriteBatch);
 		spriteBatch.end();
 	}
 

@@ -2,7 +2,6 @@ package com.dodge.game.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class FileUtil {
 //	public BitmapFont loadFont() {

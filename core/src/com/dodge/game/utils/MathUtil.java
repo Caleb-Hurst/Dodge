@@ -44,4 +44,9 @@ public class MathUtil {
 			}
 		}
 	}
+	
+	public int multiplyByTwentyPercent(int x) {
+		x *= 1.2;
+		return x;
+	}
 }

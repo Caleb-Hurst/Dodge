@@ -11,6 +11,7 @@ import com.dodge.game.domain.Asteroid;
 import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Laser;
+import com.dodge.game.domain.ObjectSpeed;
 import com.dodge.game.domain.Ship;
 
 public class ObjectManagerService {
@@ -58,11 +59,11 @@ public class ObjectManagerService {
 		return laser;
 	}
 
-	public Laser createEnemyLaser(Enemy enemyShip) {
+	public Laser createEnemyLaser(Enemy enemyShip, ObjectSpeed objectSpeed) {
 		Laser laser = new Laser();
 		laser.setAngle(enemyShip.getRotation());
 		laser.setSprite("laser-2.png");
-		laser.setSpeed(400);
+		laser.setSpeed(objectSpeed.getLaserSpeed());
 		laser.setWidth(6);
 		laser.setHeight(40);
 		laser.setSize(6, 40);
@@ -72,7 +73,7 @@ public class ObjectManagerService {
 		return laser;
 	}
 
-	public Enemy createEnemy(Ship playerShip) {
+	public Enemy createEnemy(Ship playerShip, ObjectSpeed objectSpeed) {
 		Random random = new Random();
 		Enemy enemy = new Enemy();
 		float randomX = random.nextFloat() * 800; // Random number between 0 and 480
@@ -90,27 +91,27 @@ public class ObjectManagerService {
 		enemy.setActive(true);
 		enemy.setSize(70, 60);
 		enemy.getSprite().setOriginCenter();
-		enemy.setSpeed(200);
+		enemy.setSpeed(objectSpeed.getEnemyShipSpeed());
 		enemy.setBoundingBox(new Rectangle());
 		// random position for working code
 //		enemy.getSprite().setOriginBasedPosition(randomX,randomY);
 		// temporary position for dev
 		switch (x) {
-        case 1:
-            enemy.getSprite().setPosition(0, randomY + 20);
-            break;
-        case 2:
-            enemy.getSprite().setPosition(randomX + 20, 0);
-            break;
-        case 3:
-            enemy.getSprite().setPosition(Gdx.graphics.getWidth(), randomY + 20);
-            break;
-        case 4:
-            enemy.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight());
-            break;
-    }
-    
-    x = (x % 4) + 1;
+		case 1:
+			enemy.getSprite().setPosition(0, randomY + 20);
+			break;
+		case 2:
+			enemy.getSprite().setPosition(randomX + 20, 0);
+			break;
+		case 3:
+			enemy.getSprite().setPosition(Gdx.graphics.getWidth(), randomY + 20);
+			break;
+		case 4:
+			enemy.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight());
+			break;
+		}
+
+		x = (x % 4) + 1;
 		enemies.add(enemy);
 		return enemy;
 	}
@@ -123,94 +124,89 @@ public class ObjectManagerService {
 
 	}
 
-	public Asteroid createAsteroid(Ship playerShip) {
-	    Random random = new Random();
-	    float randomX = random.nextFloat() * 800; // Random number between 0 and 800
-	    float randomY = random.nextFloat() * 480;
-	    
-	    Asteroid asteroid = new Asteroid();
-	    asteroid.setSprite("asteroid.png");
+	public Asteroid createAsteroid(Ship playerShip, ObjectSpeed objectSpeed) {
+		Random random = new Random();
+		float randomX = random.nextFloat() * 800; // Random number between 0 and 800
+		float randomY = random.nextFloat() * 480;
 
-	    // Set asteroid position based on random side
-	    switch (y) {
-	        case 1:
-	            asteroid.getSprite().setPosition(0, randomY + 20);
-	            break;
-	        case 2:
-	            asteroid.getSprite().setPosition(randomX + 20, 0);
-	            break;
-	        case 3:
-	            asteroid.getSprite().setPosition(Gdx.graphics.getWidth(), randomY + 20);
-	            break;
-	        case 4:
-	            asteroid.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight());
-	            break;
-	    }
-	    
-	    y = (y % 4) + 1;
+		Asteroid asteroid = new Asteroid();
+		asteroid.setSprite("asteroid.png");
 
-	    // Set angle towards player ship
-	    Vector2 playerPosition = new Vector2(playerShip.getSprite().getX(), playerShip.getSprite().getY());
-	    Vector2 asteroidPosition = new Vector2(asteroid.getSprite().getX(), asteroid.getSprite().getY());
-	    float angleRad = MathUtils.atan2(playerPosition.y - asteroidPosition.y, playerPosition.x - asteroidPosition.x);
-	    float angleDeg = MathUtils.radiansToDegrees * angleRad + 270f;
-	    
-	    asteroid.setAngle(angleDeg);
-	    asteroid.setRotation(angleDeg - 45); 
-	    asteroid.getSprite().setSize(70, 70);
-	    asteroid.setSpeed(170);
-	    asteroid.getSprite().setOriginCenter();
-	    
-	    return asteroid;
-	}
-	
-	public Asteroid createMegaAsteroid(Ship playerShip) {
-		    Random random = new Random();
-		    float randomX = random.nextFloat() * 800; // Random number between 0 and 800
-		    float randomY = random.nextFloat() * 480;
+		// Set asteroid position based on random side
+		switch (y) {
+		case 1:
+			asteroid.getSprite().setPosition(0, randomY + 20);
+			break;
+		case 2:
+			asteroid.getSprite().setPosition(randomX + 20, 0);
+			break;
+		case 3:
+			asteroid.getSprite().setPosition(Gdx.graphics.getWidth(), randomY + 20);
+			break;
+		case 4:
+			asteroid.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight());
+			break;
+		}
 
-		    Asteroid asteroid = new Asteroid();
-		    asteroid.setSprite("asteroid.png");
+		y = (y % 4) + 1;
 
-		    int side = random.nextInt(4) + 1; // Random value between 1 and 4 representing a side
+		// Set angle towards player ship
+		Vector2 playerPosition = new Vector2(playerShip.getSprite().getX(), playerShip.getSprite().getY());
+		Vector2 asteroidPosition = new Vector2(asteroid.getSprite().getX(), asteroid.getSprite().getY());
+		float angleRad = MathUtils.atan2(playerPosition.y - asteroidPosition.y, playerPosition.x - asteroidPosition.x);
+		float angleDeg = MathUtils.radiansToDegrees * angleRad + 270f;
 
-		    // Set initial position outside the screen based on the chosen side
-		    switch (side) {
-		        case 1: // Left side
-		            asteroid.getSprite().setPosition(-asteroid.getSprite().getWidth(), randomY + 20);
-		            break;
-		        case 2: // Top side
-		            asteroid.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight() + asteroid.getSprite().getHeight());
-		            break;
-		        case 3: // Right side
-		            asteroid.getSprite().setPosition(Gdx.graphics.getWidth() + asteroid.getSprite().getWidth(), randomY + 20);
-		            break;
-		        case 4: // Bottom side
-		            asteroid.getSprite().setPosition(randomX + 20, -asteroid.getSprite().getHeight());
-		            break;
-		    }
+		asteroid.setAngle(angleDeg);
+		asteroid.setRotation(angleDeg - 45);
+		asteroid.getSprite().setSize(70, 70);
+		asteroid.setSpeed(objectSpeed.getAsteroidSpeed());
+		asteroid.getSprite().setOriginCenter();
 
-		    // Rest of your code...
-
-		 
-
-		    
-		    x = (x % 4) + 1;
-
-		    // Set angle towards player ship
-		    Vector2 playerPosition = new Vector2(playerShip.getSprite().getX(), playerShip.getSprite().getY());
-		    Vector2 asteroidPosition = new Vector2(asteroid.getSprite().getX(), asteroid.getSprite().getY());
-		    float angleRad = MathUtils.atan2(playerPosition.y - asteroidPosition.y, playerPosition.x - asteroidPosition.x);
-		    float angleDeg = MathUtils.radiansToDegrees * angleRad + 282f;
-		    
-		    asteroid.setAngle(angleDeg);
-		    asteroid.setRotation(angleDeg - 45); 
-		    asteroid.getSprite().setSize(700, 700);
-		    asteroid.setSpeed(100);
-		    asteroid.getSprite().setOriginCenter();
 		return asteroid;
 	}
 
+	public Asteroid createMegaAsteroid(Ship playerShip) {
+		Random random = new Random();
+		float randomX = random.nextFloat() * 800; // Random number between 0 and 800
+		float randomY = random.nextFloat() * 480;
 
+		Asteroid asteroid = new Asteroid();
+		asteroid.setSprite("asteroid.png");
+
+		int side = random.nextInt(4) + 1; // Random value between 1 and 4 representing a side
+
+		// Set initial position outside the screen based on the chosen side
+		switch (side) {
+		case 1: // Left side
+			asteroid.getSprite().setPosition(-asteroid.getSprite().getWidth(), randomY + 20);
+			break;
+		case 2: // Top side
+			asteroid.getSprite().setPosition(randomX + 20, Gdx.graphics.getHeight() + asteroid.getSprite().getHeight());
+			break;
+		case 3: // Right side
+			asteroid.getSprite().setPosition(Gdx.graphics.getWidth() + asteroid.getSprite().getWidth(), randomY + 20);
+			break;
+		case 4: // Bottom side
+			asteroid.getSprite().setPosition(randomX + 20, -asteroid.getSprite().getHeight());
+			break;
+		}
+
+		// Rest of your code...
+
+		x = (x % 4) + 1;
+
+		// Set angle towards player ship
+		Vector2 playerPosition = new Vector2(playerShip.getSprite().getX(), playerShip.getSprite().getY());
+		Vector2 asteroidPosition = new Vector2(asteroid.getSprite().getX(), asteroid.getSprite().getY());
+		float angleRad = MathUtils.atan2(playerPosition.y - asteroidPosition.y, playerPosition.x - asteroidPosition.x);
+		float angleDeg = MathUtils.radiansToDegrees * angleRad + 282f;
+
+		asteroid.setAngle(angleDeg);
+		asteroid.setRotation(angleDeg - 45);
+		asteroid.getSprite().setSize(700, 700);
+		asteroid.setSpeed(100);
+		asteroid.getSprite().setOriginCenter();
+		return asteroid;
+	}
 
 }

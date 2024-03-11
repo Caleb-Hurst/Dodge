@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Explosion;
 import com.dodge.game.domain.Laser;
+import com.dodge.game.domain.ObjectSpeed;
 import com.dodge.game.domain.Ship;
 
 public class LaserService {
@@ -39,9 +40,9 @@ public class LaserService {
 		return playerLasers;
 	}
 
-	public ArrayList<Laser> enemyShoot(Enemy enemyShip) {
+	public ArrayList<Laser> enemyShoot(Enemy enemyShip, ObjectSpeed objectSpeed) {
 		if (enemyShip.getSprite().getX() < Gdx.graphics.getWidth()) {
-			Laser laser = objectManagerService.createEnemyLaser(enemyShip);
+			Laser laser = objectManagerService.createEnemyLaser(enemyShip,objectSpeed);
 			soundManagerService.enemyLaser();
 			float spriteCenterX = enemyShip.getX() + laser.getSprite().getWidth() / 2;
 			float spriteBottomY = enemyShip.getY() + -20f; // Change to bottom

@@ -9,9 +9,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import com.dodge.game.domain.Asteroid;
 import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Explosion;
+import com.dodge.game.domain.GameIncrement;
+import com.dodge.game.domain.ObjectSpeed;
 import com.dodge.game.domain.Ship;
 
 public class EnemyService {
@@ -29,34 +30,19 @@ public class EnemyService {
 	public boolean isEnemyTimerActive = true;
 	public boolean isGameTimerActive = true;
 
-	public void increaseIntensity() {
-		if (isGameTimerActive) {
-			isGameTimerActive = false;
-			Timer.schedule(new Timer.Task() {
-				@Override
-				public void run() {
-
-					if (x >= 2) {
-						x--;
-						System.out.println(x);
+	public void generateEnemyEveryWithIncrementSeconds(Ship playerShip, GameIncrement gameIncrement) {
+		ObjectSpeed objectSpeed = gameIncrement.getObjectSpeed();
+		if (!gameIncrement.isAsteroidEventHappening()) {
+			if (isEnemyTimerActive) {
+				isEnemyTimerActive = false;
+				Timer.schedule(new Timer.Task() {
+					@Override
+					public void run() {
+						createEnemies(playerShip, objectSpeed);
+						isEnemyTimerActive = true;
 					}
-
-					isGameTimerActive = true;
-				}
-			}, 15);
-		}
-	}
-
-	public void generateEnemyEveryWithIncrementSeconds(Ship playerShip) {
-		if (isEnemyTimerActive) {
-			isEnemyTimerActive = false;
-			Timer.schedule(new Timer.Task() {
-				@Override
-				public void run() {
-					createEnemies(playerShip);
-					isEnemyTimerActive = true;
-				}
-			}, x);
+				}, objectSpeed.getGenerateEnemyShipInterval());
+			}
 		}
 	}
 
@@ -64,12 +50,12 @@ public class EnemyService {
 		return 2 + random.nextFloat() * 3;
 	}
 
-	public Enemy shootLaserEvery3Seconds(Enemy enemy) {
+	public Enemy shootLaserEvery3Seconds(Enemy enemy, ObjectSpeed objectSpeed) {
 		Timer.schedule(new Timer.Task() {
 			@Override
 			public void run() {
 				if (enemy.getActive()) {
-					laserService.enemyShoot(enemy);
+					laserService.enemyShoot(enemy, objectSpeed);
 				}
 			}
 		}, 2, generateRandomDelay());
@@ -77,9 +63,9 @@ public class EnemyService {
 		return enemy;
 	}
 
-	public ArrayList<Enemy> createEnemies(Ship playerShip) {
-		Enemy enemy = objectManagerService.createEnemy(playerShip);
-		shootLaserEvery3Seconds(enemy);
+	public ArrayList<Enemy> createEnemies(Ship playerShip, ObjectSpeed objectSpeed) {
+		Enemy enemy = objectManagerService.createEnemy(playerShip, objectSpeed);
+		shootLaserEvery3Seconds(enemy, objectSpeed);
 		enemy.getSprite().setRotation(playerShip.getRotation());
 		enemy.setActive(true);
 		enemies.add(enemy);

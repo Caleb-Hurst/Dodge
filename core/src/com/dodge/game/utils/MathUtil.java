@@ -31,22 +31,31 @@ public class MathUtil {
 	}
 	
 	public void multiplySpeedThreshold(Ship playerShip, GameIncrement gameIncrement) {
-		int x = playerShip.getScore();
-		int y = gameIncrement.getGameScoreIncrement();
-		int z = gameIncrement.getGameScoreIncrementCounter();
-		if (x == y) {
-			if(z<=2) {
-				x *= 2;
-				gameIncrement.setGameScoreIncrement(x);
-				z++;
-			}else {
-				z = 1;
+		int a = playerShip.getScore();
+		int b = gameIncrement.getGameScoreIncrement();
+		int c = gameIncrement.getGameScoreIncrementCounter();
+		if (a >= b) {
+			gameIncrement.setPreviousGameScoreIncrement(b);
+			if(c<2) {
+				a *= 1.3;
+				gameIncrement.setGameScoreIncrement(a);
+				c++;
+				System.out.println("New Increment for event " + gameIncrement.getGameScoreIncrement());
+				if(c==2) {
+					c = 1;
+				}
 			}
 		}
+		
 	}
 	
 	public float multiplyByTwentyPercent(float x) {
-		x *= 1.2;
+		x *= 1.05;
+		return x;
+	}
+
+	public float multiplyGenerationInterval(float x) {
+		x *= .95; // increase generation by 50 percent
 		return x;
 	}
 }

@@ -72,7 +72,7 @@ public class PlayScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
-		gameIncrementService.increaseGameSpeed(playerShip);
+		gameIncrementService.increaseGameSpeed(playerShip,gameIncrement);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);

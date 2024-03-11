@@ -12,7 +12,6 @@ public class GameIncrement {
 	public void setGameScoreIncrement(int gameScoreIncrement) {
 		this.gameScoreIncrement = gameScoreIncrement;
 	}
-	
 
 	public int getGameScoreIncrementCounter() {
 		return gameScoreIncrementCounter;

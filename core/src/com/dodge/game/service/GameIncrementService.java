@@ -48,6 +48,9 @@ public class GameIncrementService {
 	}
 	
 	private void multiplyObjectSpeed(GameIncrement gameIncrement) {
-		
+		ObjectSpeed objectSpeed = gameIncrement.getObjectSpeed();
+		mathUtil.multiplyByTwentyPercent(objectSpeed.getLaserSpeed());
+//setting objects speed here and increasing by  20 percent. 
 	}
+	
 }

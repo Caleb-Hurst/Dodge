@@ -36,11 +36,11 @@ public class AsteroidService {
 					isGameTimerActive = true;
 
 				}
-			},  15);
+			},  1);
 		}
 	}
 
-	public void generateAsteroidEvery10Seconds(Ship playerShip) {
+	public void generateAsteroidWithIncrement(Ship playerShip) {
 		if (isAsteroidTimerActive) {
 			isAsteroidTimerActive = false;
 			Timer.schedule(new Timer.Task() {
@@ -115,6 +115,50 @@ public class AsteroidService {
 			}
 		}
 		asteroids.removeAll(asteroidsToRemove);
+	}
+	public void updateMegaAsteroid(float delta, Ship playerShip, ArrayList<Enemy> enemies, Explosion explosion, Asteroid asteroid) {
+			asteroid.setActive(true);
+			// Calculate the movement along x and y axes based on the current angle
+			float deltaX = asteroid.getSpeed() * delta * MathUtils.cosDeg(asteroid.getAngle());
+			float deltaY = -asteroid.getSpeed() * delta * MathUtils.sinDeg(asteroid.getAngle());
+
+			// Move the asteroid based on calculated values
+			asteroid.getSprite().translate(deltaY, deltaX);
+			for (Iterator<Enemy> enemyIterator = enemies.iterator(); enemyIterator.hasNext();) {
+				Enemy enemy = enemyIterator.next();
+				Rectangle enemyBoundingBox = new Rectangle(enemy.getSprite().getBoundingRectangle());
+				// Adjust the enemy bounding box size as needed
+				enemyBoundingBox.width *= 0.4f; // Make it 80% of the original width
+				enemyBoundingBox.height *= 0.4f; // Make it 80% of the original height
+				Rectangle laserBoundingBox = new Rectangle(asteroid.getSprite().getBoundingRectangle());
+
+				if (laserBoundingBox.overlaps(enemyBoundingBox)) {
+					// Handle collision, e.g., mark the laser and enemy as inactive
+					asteroid.setActive(false);
+					enemy.setActive(false);
+
+					// Remove objects or add to a list for removal (based on your design)
+					// Crashes when you shoot two ships at once.					
+					float oldShipX = enemy.getSprite().getX();
+					float oldShipY = enemy.getSprite().getY();
+					enemy.getSprite().getY();
+					enemyIterator.remove();
+					soundManagerService.explosion();
+					explosion.getSprite().setPosition(oldShipX, oldShipY);
+					explosion.setActive(true);
+					holdExplosionOnScreen(explosion);
+				}
+			}
+			// Optionally, you can add logic to check if the asteroid goes off the screen
+			// and
+			// handle it accordingly
+//			if (asteroid.getSprite().getY() > Gdx.graphics.getHeight() || asteroid.getSprite().getY() < 0
+//					|| asteroid.getSprite().getX() < 0
+//					|| asteroid.getSprite().getX() > Gdx.graphics.getWidth()) {
+//				iterator.remove(); // Remove the asteroid if it goes off the screen
+//			}
+//		
+//		asteroids.removeAll(asteroidsToRemove);
 	}
 	public void holdExplosionOnScreen(Explosion explosion) {
 

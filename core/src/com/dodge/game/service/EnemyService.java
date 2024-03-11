@@ -42,7 +42,6 @@ public class EnemyService {
 					}
 
 					isGameTimerActive = true;
-
 				}
 			}, 15);
 		}

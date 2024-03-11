@@ -3,7 +3,6 @@ package com.dodge.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.dodge.game.domain.Asteroid;
 import com.dodge.game.domain.Enemy;
 import com.dodge.game.domain.Explosion;
+import com.dodge.game.domain.GameIncrement;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
@@ -40,6 +40,7 @@ public class PlayScreen implements Screen {
 	private Asteroid megaAsteroid;
 	private MathUtil mathUtil;
 	private TextService textService = new TextService();
+	private GameIncrement gameIncrement;
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
 	public PlayScreen(DodgeGame game) {
@@ -60,9 +61,8 @@ public class PlayScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-//		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
-//		soundManagerService.setVolume(backgroundMusic, .1f);
-		
+		Music backgroundMusic = soundManagerService.playMusic("2021-10-19_-_Funny_Bit_-_www.FesliyanStudios.com.mp3");
+		soundManagerService.setVolume(backgroundMusic, .1f);
 		shapeRenderer = new ShapeRenderer();
 		font.getData().setScale(5);
 		
@@ -76,7 +76,8 @@ public class PlayScreen implements Screen {
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);
 		enemyService.updateEnemyShip(delta, playerShip);
 		asteroidService.updateAsteroids(delta, playerShip,enemyService.getEnemies(), explosion);
-		asteroidService.generateAsteroidEvery10Seconds(playerShip);
+		asteroidService.generateAsteroidWithIncrement(playerShip);
+		asteroidService.updateMegaAsteroid(delta, playerShip, enemyService.getEnemies(), explosion, megaAsteroid);
 		enemyService.generateEnemyEveryWithIncrementSeconds(playerShip);
 		enemyService.increaseIntensity();
 		asteroidService.increaseIntensity();
@@ -108,7 +109,7 @@ public class PlayScreen implements Screen {
 			asteroid.draw(spriteBatch);
 		}
 		explosion.draw(spriteBatch);
-		megaAsteroid.draw(spriteBatch);
+//		megaAsteroid.draw(spriteBatch);
 		spriteBatch.end();
 	}
 

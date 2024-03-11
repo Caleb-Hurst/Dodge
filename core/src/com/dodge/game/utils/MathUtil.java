@@ -1,5 +1,7 @@
 package com.dodge.game.utils;
 
+import java.util.Random;
+
 import com.badlogic.gdx.utils.Timer;
 import com.dodge.game.domain.GameIncrement;
 import com.dodge.game.domain.Ship;
@@ -57,5 +59,11 @@ public class MathUtil {
 	public float multiplyGenerationInterval(float x) {
 		x *= .95; // increase generation by 50 percent
 		return x;
+	}
+	public float generateRandomSpeed(float x) {
+	    Random random = new Random();
+	    float max = x + 500;
+	    float randomNumber = random.nextFloat() * (max - x) + x;
+	    return randomNumber;
 	}
 }

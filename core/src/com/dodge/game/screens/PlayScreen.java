@@ -13,6 +13,7 @@ import com.dodge.game.domain.GameIncrement;
 import com.dodge.game.domain.Laser;
 import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
+import com.dodge.game.service.AsteroidEventService;
 import com.dodge.game.service.AsteroidService;
 import com.dodge.game.service.EnemyService;
 import com.dodge.game.service.GameIncrementService;
@@ -36,8 +37,8 @@ public class PlayScreen implements Screen {
 	private BitmapFont font = new BitmapFont();
 	private Explosion explosion;
 	private AsteroidService asteroidService;
+	private AsteroidEventService asteroidEventService = new AsteroidEventService();
 	private Asteroid asteroid;
-	private Asteroid megaAsteroid;
 	private MathUtil mathUtil;
 	private TextService textService = new TextService();
 	private GameIncrement gameIncrement = new GameIncrement();
@@ -81,8 +82,12 @@ public class PlayScreen implements Screen {
 		enemyService.generateEnemyEveryWithIncrementSeconds(playerShip, gameIncrement);
 		mathUtil.isScoreMultipleOfTen(playerShip);
 		soundManagerService.isMultipleOfTen(playerShip);
+		asteroidEventService.generateAsteroidWithIncrement(playerShip, gameIncrement);
+		asteroidEventService.updateAsteroids(delta, playerShip, enemyService.getEnemies(), explosion);
 		spriteBatch.begin();
 		textService.flashColors(playerShip, font);
+		soundManagerService.playMusic(gameIncrement);
+		soundManagerService.playAsteroidEventMusic(gameIncrement);
 		
 		// Draw the score
 		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);
@@ -104,6 +109,9 @@ public class PlayScreen implements Screen {
 			enemy.draw(spriteBatch);
 		}
 		for (Asteroid asteroid : asteroidService.getAsteroids()) {
+			asteroid.draw(spriteBatch);
+		}
+		for (Asteroid asteroid : asteroidEventService.getAsteroids()) {
 			asteroid.draw(spriteBatch);
 		}
 		explosion.draw(spriteBatch);

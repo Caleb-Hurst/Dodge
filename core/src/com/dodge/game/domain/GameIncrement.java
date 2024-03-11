@@ -6,6 +6,7 @@ public class GameIncrement {
 	private int previousGameScoreIncrement;
 	private ObjectSpeed objectSpeed = new ObjectSpeed();
 	private boolean isAsteroidEventHappening = false;
+	private float backgroundMusicSpeed;
 
 	public int getGameScoreIncrement() {
 		return gameScoreIncrement;
@@ -45,6 +46,14 @@ public class GameIncrement {
 
 	public void setAsteroidEventHappening(boolean isAsteroidEventHappening) {
 		this.isAsteroidEventHappening = isAsteroidEventHappening;
+	}
+
+	public float getBackgroundMusicSpeed() {
+		return backgroundMusicSpeed;
+	}
+
+	public void setBackgroundMusicSpeed(float backgroundMusicSpeed) {
+		this.backgroundMusicSpeed = backgroundMusicSpeed;
 	}
 	
 

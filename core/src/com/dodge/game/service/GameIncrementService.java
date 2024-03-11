@@ -2,6 +2,8 @@ package com.dodge.game.service;
 
 import java.util.Random;
 
+import com.badlogic.gdx.utils.Timer;
+import com.dodge.game.domain.Asteroid;
 import com.dodge.game.domain.GameIncrement;
 import com.dodge.game.domain.ObjectSpeed;
 import com.dodge.game.domain.Ship;
@@ -10,6 +12,7 @@ import com.dodge.game.utils.MathUtil;
 public class GameIncrementService {
 	private GameIncrement gameIncrement;
 	private MathUtil mathUtil = new MathUtil();
+	private SoundManagerService soundManagerService = new SoundManagerService();
 
 	public GameIncrementService(GameIncrement gameIncrement) {
 		this.gameIncrement = gameIncrement;
@@ -24,6 +27,14 @@ public class GameIncrementService {
 		if (score == threshold && score != previousThreshold) {
 			multiplyObjectSpeed(gameIncrement);
 			gameIncrement.setAsteroidEventHappening(true);
+			Timer.schedule(new Timer.Task() {
+				@Override
+				public void run() {
+					gameIncrement.setAsteroidEventHappening(false);
+					
+				}
+			}, 20);
+			
 		}
 		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);
 		
@@ -32,13 +43,14 @@ public class GameIncrementService {
 	private ObjectSpeed setObjectSpeeds(ObjectSpeed objectSpeed) {
 		if (!objectSpeed.isHasBeenSet()) {
 			objectSpeed.setLaserSpeed(400);
-			objectSpeed.setAsteroidSpeed(170);
+			objectSpeed.setAsteroidSpeed(200);
 			objectSpeed.setGenerateAsteroidInterval(3);
+			objectSpeed.setGenerateAsteroidEventInterval(1f);
+			objectSpeed.setAsteroidEventSpeed(mathUtil.generateRandomSpeed(objectSpeed.getAsteroidSpeed()));
 			objectSpeed.setEnemyShipSpeed(200);
 			objectSpeed.setGenerateEnemyShipInterval(5);
-			objectSpeed.setGenerateEnemyShipInterval(2);
-			objectSpeed.setRandomAsteroidSpeed(generateRandomSpeed(objectSpeed.getAsteroidSpeed()));
-			objectSpeed.setRandomEnemyLaserSpeed(generateRandomSpeed(objectSpeed.getLaserSpeed()));
+			objectSpeed.setRandomAsteroidSpeed(mathUtil.generateRandomSpeed(objectSpeed.getAsteroidSpeed()));
+			objectSpeed.setRandomEnemyLaserSpeed(mathUtil.generateRandomSpeed(objectSpeed.getLaserSpeed()));
 			objectSpeed.setRandomEnemyShipSpeed(objectSpeed.getEnemyShipSpeed());
 			objectSpeed.setChaosAsteroidSpeed(170);
 			objectSpeed.setHasBeenSet(true);
@@ -46,12 +58,7 @@ public class GameIncrementService {
 		return objectSpeed;
 	}
 
-	private float generateRandomSpeed(float x) {
-		Random random = new Random();
-		float max = x + 20;
-		float randomNumber = random.nextFloat(max - x + 1) + x;
-		return randomNumber;
-	}
+	
 
 	private void multiplyObjectSpeed(GameIncrement gameIncrement) {
 		float getLaserSpeed = gameIncrement.getObjectSpeed().getLaserSpeed();
@@ -73,7 +80,6 @@ public class GameIncrementService {
 		float getAsteroidGenerationInterval = gameIncrement.getObjectSpeed().getGenerateAsteroidInterval();
 		float asteroidGenerationInterval = mathUtil.multiplyGenerationInterval(getAsteroidGenerationInterval);
 		gameIncrement.getObjectSpeed().setGenerateAsteroidInterval(asteroidGenerationInterval);
-		System.out.println(asteroidGenerationInterval);
 	}
 
 }

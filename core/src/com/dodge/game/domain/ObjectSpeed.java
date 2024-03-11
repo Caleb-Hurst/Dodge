@@ -7,6 +7,8 @@ public class ObjectSpeed {
 	private float laserSpeed;
 	private float randomEnemyLaserSpeed;
 	private float generateAsteroidInterval;
+	private float generateAsteroidEventInterval;
+	private float asteroidEventSpeed;
 	private float asteroidSpeed;
 	private float randomAsteroidSpeed;
 	private float chaosAsteroidSpeed;
@@ -58,6 +60,22 @@ public class ObjectSpeed {
 
 	public void setGenerateAsteroidInterval(float generateAsteroidInterval) {
 		this.generateAsteroidInterval = generateAsteroidInterval;
+	}
+
+	public float getGenerateAsteroidEventInterval() {
+		return generateAsteroidEventInterval;
+	}
+
+	public void setGenerateAsteroidEventInterval(float generateAsteroidEventInterval) {
+		this.generateAsteroidEventInterval = generateAsteroidEventInterval;
+	}
+
+	public float getAsteroidEventSpeed() {
+		return asteroidEventSpeed;
+	}
+
+	public void setAsteroidEventSpeed(float asteroidEventSpeed) {
+		this.asteroidEventSpeed = asteroidEventSpeed;
 	}
 
 	public float getAsteroidSpeed() {

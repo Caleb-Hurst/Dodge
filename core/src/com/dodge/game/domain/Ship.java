@@ -11,7 +11,7 @@ public class Ship {
 	private Rectangle boundingBox;
 	private float x;
 	private float y;
-	private int score = 49;
+	private int score = 50;
 	private boolean isMultipleOfTen = false;
 	public Ship(float x, float y, float width, float height, String texturePath) {
 		Texture shipTexture = new Texture(texturePath);

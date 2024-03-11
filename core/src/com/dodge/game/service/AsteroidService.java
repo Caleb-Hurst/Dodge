@@ -19,9 +19,7 @@ public class AsteroidService {
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private SoundManagerService soundManagerService = new SoundManagerService();
-	private int x = 4;
 	private boolean isAsteroidTimerActive = true;
-	private boolean isGameTimerActive = true;
 
 	public void generateAsteroidWithIncrement(Ship playerShip, GameIncrement gameIncrement) {
 		ObjectSpeed objectSpeed = gameIncrement.getObjectSpeed();
@@ -79,7 +77,6 @@ public class AsteroidService {
 					if (currentAsteroid != null) {
 						asteroidsToRemove.add(currentAsteroid);
 					}
-					x++;
 					float oldShipX = enemy.getSprite().getX();
 					float oldShipY = enemy.getSprite().getY();
 					enemy.getSprite().getY();
@@ -90,9 +87,6 @@ public class AsteroidService {
 					holdExplosionOnScreen(explosion);
 				}
 			}
-			// Optionally, you can add logic to check if the asteroid goes off the screen
-			// and
-			// handle it accordingly
 			if (currentAsteroid.getSprite().getY() > Gdx.graphics.getHeight() || currentAsteroid.getSprite().getY() < 0
 					|| currentAsteroid.getSprite().getX() < 0
 					|| currentAsteroid.getSprite().getX() > Gdx.graphics.getWidth()) {

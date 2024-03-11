@@ -16,6 +16,7 @@ import com.dodge.game.domain.Ship;
 import com.dodge.game.main.DodgeGame;
 import com.dodge.game.service.AsteroidService;
 import com.dodge.game.service.EnemyService;
+import com.dodge.game.service.GameIncrementService;
 import com.dodge.game.service.InputHandlerService;
 import com.dodge.game.service.LaserService;
 import com.dodge.game.service.ObjectManagerService;
@@ -40,7 +41,8 @@ public class PlayScreen implements Screen {
 	private Asteroid megaAsteroid;
 	private MathUtil mathUtil;
 	private TextService textService = new TextService();
-	private GameIncrement gameIncrement;
+	private GameIncrement gameIncrement = new GameIncrement();
+	private GameIncrementService  gameIncrementService = new GameIncrementService(gameIncrement);
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
 	public PlayScreen(DodgeGame game) {
@@ -53,7 +55,6 @@ public class PlayScreen implements Screen {
 		this.explosion = ObjectManagerService.createExplosion();
 		this.asteroidService = new AsteroidService();
 		this.asteroid = objectManagerService.createAsteroid(playerShip);
-		this.megaAsteroid = objectManagerService.createMegaAsteroid(playerShip);
 		this.mathUtil = new MathUtil();
 
 	}
@@ -71,6 +72,7 @@ public class PlayScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
+		gameIncrementService.increaseGameSpeed(playerShip);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);

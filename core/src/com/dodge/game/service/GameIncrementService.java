@@ -17,10 +17,13 @@ public class GameIncrementService {
 		setObjectSpeeds(objectSpeed);
 	}
 
-	public boolean increaseGameSpeed(Ship playerShip) {
-		int score = mathUtil.isScoreMultipleOfTen(playerShip);
-		boolean increaseSpeed = false;
-		return increaseSpeed;
+	public void increaseGameSpeed(Ship playerShip,GameIncrement gameIncrement) {
+		int score = playerShip.getScore();
+		int threshold = gameIncrement.getGameScoreIncrement();
+		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);	
+		if (score == threshold) {
+			multiplyObjectSpeed(gameIncrement);
+		}
 	}
 
 	private ObjectSpeed setObjectSpeeds(ObjectSpeed objectSpeed) {
@@ -42,5 +45,9 @@ public class GameIncrementService {
 		float max = x + 20;
 		float randomNumber = random.nextFloat(max - x + 1) + x;
 		return randomNumber;
+	}
+	
+	private void multiplyObjectSpeed(GameIncrement gameIncrement) {
+		
 	}
 }

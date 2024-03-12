@@ -112,6 +112,7 @@ public class PlayScreen implements Screen {
 		}
 		for (Asteroid asteroid : asteroidEventService.getAsteroids()) {
 			asteroid.draw(spriteBatch);
+			
 		}
 		explosion.draw(spriteBatch);
 //		megaAsteroid.draw(spriteBatch);

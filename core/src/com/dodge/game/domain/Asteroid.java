@@ -3,6 +3,7 @@ package com.dodge.game.domain;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.dodge.game.service.ObjectManagerService;
 
 public class Asteroid {
 	private Sprite sprite;
@@ -63,5 +64,6 @@ public class Asteroid {
 		this.rotation = rotation;
 		sprite.setRotation(rotation);
 	}
+
 	
 }

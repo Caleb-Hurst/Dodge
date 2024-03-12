@@ -52,7 +52,7 @@ public class AsteroidService {
 		List<Asteroid> asteroidsToRemove = new ArrayList<>();
 		while (iterator.hasNext()) {
 			Asteroid currentAsteroid = iterator.next();
-
+			explosion.getSprite().setSize(70, 70);
 			// Calculate the movement along x and y axes based on the current angle
 			float deltaX = currentAsteroid.getSpeed() * delta * MathUtils.cosDeg(currentAsteroid.getAngle());
 			float deltaY = -currentAsteroid.getSpeed() * delta * MathUtils.sinDeg(currentAsteroid.getAngle());

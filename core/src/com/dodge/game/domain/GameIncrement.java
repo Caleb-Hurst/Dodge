@@ -1,7 +1,7 @@
 package com.dodge.game.domain;
 
 public class GameIncrement {
-	private int gameScoreIncrement = 50;
+	private int gameScoreIncrement = 12;
 	private int gameScoreIncrementCounter;
 	private int previousGameScoreIncrement;
 	private ObjectSpeed objectSpeed = new ObjectSpeed();

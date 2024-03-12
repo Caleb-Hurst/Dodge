@@ -126,7 +126,12 @@ public class ObjectManagerService {
 		explosion.setSprite("explosion.png");
 		explosion.setSize(70, 60);
 		return explosion;
-
+	}
+	public static Explosion createAsteroidEventExplosion(Asteroid asteroid) {
+		Explosion explosion = new Explosion();
+		explosion.setSprite("explosion.png");
+		explosion.setSize(70, 60);
+		return explosion;
 	}
 
 	public Asteroid createAsteroid(Ship playerShip, ObjectSpeed objectSpeed) {
@@ -179,6 +184,7 @@ public class ObjectManagerService {
 		float randomDirection = random.nextFloat() * (282 - 270) + 270;
 
 		Asteroid asteroid = new Asteroid();
+
 		asteroid.setSprite("asteroid.png");
 
 		int side = random.nextInt(4) + 1; // Random value between 1 and 4 representing a side

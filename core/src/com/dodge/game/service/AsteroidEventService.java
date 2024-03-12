@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
@@ -30,13 +31,12 @@ public class AsteroidEventService {
 				Timer.schedule(new Timer.Task() {
 					@Override
 					public void run() {
-						
-							
-								Asteroid asteroid = objectManagerService.createEventAsteroid(playerShip, objectSpeed);
-								asteroid.setActive(true);
-								asteroids.add(asteroid);
-								isAsteroidTimerActive = true;
-						
+
+						Asteroid asteroid = objectManagerService.createEventAsteroid(playerShip, objectSpeed);
+
+						asteroid.setActive(true);
+						asteroids.add(asteroid);
+						isAsteroidTimerActive = true;
 
 					}
 				}, objectSpeed.getGenerateAsteroidEventInterval());
@@ -49,7 +49,8 @@ public class AsteroidEventService {
 		List<Asteroid> asteroidsToRemove = new ArrayList<>();
 		while (iterator.hasNext()) {
 			Asteroid currentAsteroid = iterator.next();
-			Circle currentAsteroidCircle = new Circle(currentAsteroid.getSprite().getX(), currentAsteroid.getSprite().getY(), currentAsteroid.getSprite().getWidth() / 2);
+			Circle currentAsteroidCircle = new Circle(currentAsteroid.getSprite().getX(),
+					currentAsteroid.getSprite().getY(), currentAsteroid.getSprite().getWidth() / 2);
 			// Calculate the movement along x and y axes based on the current angle
 			float deltaX = currentAsteroid.getSpeed() * delta * MathUtils.cosDeg(currentAsteroid.getAngle());
 			float deltaY = -currentAsteroid.getSpeed() * delta * MathUtils.sinDeg(currentAsteroid.getAngle());
@@ -61,8 +62,8 @@ public class AsteroidEventService {
 				Rectangle enemyBoundingBox = new Rectangle(enemy.getSprite().getBoundingRectangle());
 
 				// Adjust the enemy bounding box size as needed
-				enemyBoundingBox.width *= 0.4f; // Make it 80% of the original width
-				enemyBoundingBox.height *= 0.4f; // Make it 80% of the original height
+				enemyBoundingBox.width *= 0.2f; // Make it 80% of the original width
+				enemyBoundingBox.height *= 0.2f; // Make it 80% of the original height
 				Rectangle laserBoundingBox = new Rectangle(currentAsteroid.getSprite().getBoundingRectangle());
 
 				if (laserBoundingBox.overlaps(enemyBoundingBox)) {
@@ -85,32 +86,56 @@ public class AsteroidEventService {
 					holdExplosionOnScreen(explosion);
 				}
 			}
-			
-			 for (Asteroid otherAsteroid : asteroids) {
-		            if (currentAsteroid != otherAsteroid) {  // Avoid self-collision check
-		                Circle otherAsteroidCircle = new Circle(otherAsteroid.getSprite().getX(), otherAsteroid.getSprite().getY(), otherAsteroid.getSprite().getWidth() / 2);
 
-		                if (Intersector.overlaps(currentAsteroidCircle, otherAsteroidCircle)) {
-		                    // Handle collision between asteroids
-		                    currentAsteroid.setActive(false);
-		                    otherAsteroid.setActive(false);
+			for (Asteroid otherAsteroid : asteroids) {
+				if (currentAsteroid != otherAsteroid) { // Avoid self-collision check
+					Circle otherAsteroidCircle = new Circle(otherAsteroid.getSprite().getX(),
+							otherAsteroid.getSprite().getY(), otherAsteroid.getSprite().getWidth() / 2);
 
-		                    // Remove objects or add to a list for removal
-		                    asteroidsToRemove.add(currentAsteroid);
-		                    asteroidsToRemove.add(otherAsteroid);
-		                    soundManagerService.asteroidEventCollision();
-		                   
-		                }
-		            }
-		        }
+					if (Intersector.overlaps(currentAsteroidCircle, otherAsteroidCircle)) {
+						// Handle collision between asteroids
+
+						// Remove objects or add to a list for removal
+						asteroidsToRemove.add(currentAsteroid);
+						asteroidsToRemove.add(otherAsteroid);
+						soundManagerService.asteroidEventCollision();
+						if (otherAsteroid.getSprite().getX() < currentAsteroid.getSprite().getX()) {
+
+							float oldAsteroidX = otherAsteroid.getSprite().getX();
+							float oldAsteroidY = otherAsteroid.getSprite().getY();
+//		                    	explosion.getSprite().setPosition(oldAsteroidX, oldAsteroidY)
+							explosion.getSprite().setPosition(oldAsteroidX, oldAsteroidY);
+							holdExplosionOnScreen(explosion);
+							explosion.getSprite().setSize(currentAsteroid.getSprite().getWidth(),
+									currentAsteroid.getSprite().getHeight());
+							explosion.setActive(true);
+						}
+						if (currentAsteroid.getSprite().getX() < otherAsteroid.getSprite().getX()) {
+
+							float oldAsteroidX = currentAsteroid.getSprite().getX();
+							float oldAsteroidY = currentAsteroid.getSprite().getY();
+//		                    	currentAsteroid.getExplosion().getSprite().setPosition(oldAsteroidX, oldAsteroidY);
+							explosion.getSprite().setPosition(oldAsteroidX, oldAsteroidY);
+							explosion.getSprite().setSize(currentAsteroid.getSprite().getWidth() + 20,
+									currentAsteroid.getSprite().getHeight() + 20);
+							holdExplosionOnScreen(explosion);
+							explosion.setActive(true);
+						}
+						currentAsteroid.setActive(false);
+						otherAsteroid.setActive(false);
+					}
+				}
+			}
 			// Optionally, you can add logic to check if the asteroid goes off the screen
 			// and
 			// handle it accordingly
-//			if (currentAsteroid.getSprite().getY() > Gdx.graphics.getHeight() || currentAsteroid.getSprite().getY() < 0
-//					|| currentAsteroid.getSprite().getX() < 0
-//					|| currentAsteroid.getSprite().getX() > Gdx.graphics.getWidth()) {
-//				iterator.remove(); // Remove the asteroid if it goes off the screen
-//			}
+			if (currentAsteroid.getSprite().getX() > Gdx.graphics.getWidth() + 800
+					|| currentAsteroid.getSprite().getX() + currentAsteroid.getSprite().getWidth() < -800
+					|| currentAsteroid.getSprite().getY() > Gdx.graphics.getHeight() + 800
+					|| currentAsteroid.getSprite().getY() + currentAsteroid.getSprite().getHeight() < -800) {
+				iterator.remove(); // Remove the asteroid if it goes too far outside the screen
+				System.out.println("REMOVED ASTEROID IN EVENT");
+			}
 		}
 		asteroids.removeAll(asteroidsToRemove);
 	}

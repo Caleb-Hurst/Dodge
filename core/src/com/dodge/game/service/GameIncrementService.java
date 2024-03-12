@@ -23,10 +23,12 @@ public class GameIncrementService {
 	public void increaseGameSpeed(Ship playerShip, GameIncrement gameIncrement) {
 		int score = playerShip.getScore();
 		int threshold = gameIncrement.getGameScoreIncrement();
+		
 		int previousThreshold = gameIncrement.getPreviousGameScoreIncrement();
 		if (score == threshold && score != previousThreshold) {
 			multiplyObjectSpeed(gameIncrement);
 			gameIncrement.setAsteroidEventHappening(true);
+			System.out.println(threshold);
 			Timer.schedule(new Timer.Task() {
 				@Override
 				public void run() {
@@ -35,7 +37,7 @@ public class GameIncrementService {
 			}, 20);
 			
 		}
-		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);	
+		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);
 	}
 
 	private ObjectSpeed setObjectSpeeds(ObjectSpeed objectSpeed) {
@@ -43,14 +45,14 @@ public class GameIncrementService {
 			objectSpeed.setLaserSpeed(400);
 			objectSpeed.setAsteroidSpeed(200);
 			objectSpeed.setGenerateAsteroidInterval(3);
-			objectSpeed.setGenerateAsteroidEventInterval(.5f);
+			objectSpeed.setGenerateAsteroidEventInterval(.7f);
 			objectSpeed.setAsteroidEventSpeed(mathUtil.generateRandomSpeed(objectSpeed.getAsteroidSpeed()));
-			objectSpeed.setEnemyShipSpeed(200);
-			objectSpeed.setGenerateEnemyShipInterval(5);
+			objectSpeed.setEnemyShipSpeed(150);
+			objectSpeed.setGenerateEnemyShipInterval(3);
 			objectSpeed.setRandomAsteroidSpeed(mathUtil.generateRandomSpeed(objectSpeed.getAsteroidSpeed()));
 			objectSpeed.setRandomEnemyLaserSpeed(mathUtil.generateRandomSpeed(objectSpeed.getLaserSpeed()));
 			objectSpeed.setRandomEnemyShipSpeed(objectSpeed.getEnemyShipSpeed());
-			objectSpeed.setChaosAsteroidSpeed(170);
+			objectSpeed.setChaosAsteroidSpeed(120);
 			objectSpeed.setHasBeenSet(true);
 		}
 		return objectSpeed;
@@ -78,6 +80,24 @@ public class GameIncrementService {
 		float getAsteroidGenerationInterval = gameIncrement.getObjectSpeed().getGenerateAsteroidInterval();
 		float asteroidGenerationInterval = mathUtil.multiplyGenerationInterval(getAsteroidGenerationInterval);
 		gameIncrement.getObjectSpeed().setGenerateAsteroidInterval(asteroidGenerationInterval);
+		
+		float getAsteroidEventGenerationInterval = gameIncrement.getObjectSpeed().getGenerateAsteroidEventInterval();
+		float asteroidEventGenerationInterval = mathUtil.multiplyGenerationInterval(getAsteroidEventGenerationInterval);
+		gameIncrement.getObjectSpeed().setGenerateAsteroidEventInterval(asteroidEventGenerationInterval);
 	}
+	
+//	private void multiplyObjectGeneration(GameIncrement gameIncrement) {
+//		float getShipGenerationInterval = gameIncrement.getObjectSpeed().getGenerateEnemyShipInterval();
+//		float shipGenerationInterval = mathUtil.multiplyGenerationInterval(getShipGenerationInterval);
+//		gameIncrement.getObjectSpeed().setGenerateEnemyShipInterval(shipGenerationInterval);
+//		
+//		float getAsteroidGenerationInterval = gameIncrement.getObjectSpeed().getGenerateAsteroidInterval();
+//		float asteroidGenerationInterval = mathUtil.multiplyGenerationInterval(getAsteroidGenerationInterval);
+//		gameIncrement.getObjectSpeed().setGenerateAsteroidInterval(asteroidGenerationInterval);
+//		
+//		float getAsteroidEventGenerationInterval = gameIncrement.getObjectSpeed().getGenerateAsteroidEventInterval();
+//		float asteroidEventGenerationInterval = mathUtil.multiplyGenerationInterval(getAsteroidEventGenerationInterval);
+//		gameIncrement.getObjectSpeed().setGenerateAsteroidEventInterval(asteroidEventGenerationInterval);
+//	}
 
 }

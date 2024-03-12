@@ -38,7 +38,7 @@ public class MathUtil {
 		if (a >= b) {
 			gameIncrement.setPreviousGameScoreIncrement(b);
 			if(c<2) {
-				a *= 1.3;
+				a *= 1.7;
 				gameIncrement.setGameScoreIncrement(a);
 				c++;
 //				System.out.println("New Increment for event " + gameIncrement.getGameScoreIncrement());
@@ -56,12 +56,12 @@ public class MathUtil {
 	}
 
 	public float multiplyGenerationInterval(float x) {
-		x *= .95; // increase generation by 50 percent
+		x *= .75; // increase generation by 50 percent
 		return x;
 	}
 	public float generateRandomSpeed(float x) {
 	    Random random = new Random();
-	    float max = x + 500;
+	    float max = x + 150;
 	    float randomNumber = random.nextFloat() * (max - x) + x;
 	    return randomNumber;
 	}

@@ -55,7 +55,6 @@ public class HomeScreen implements Screen {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {
 	                // Handle Play button click (navigate to Play screen, etc.)
-	                System.out.println("Play button clicked");
 	                game.setScreen(new PlayScreen(game));
 	                dispose();
 	            }

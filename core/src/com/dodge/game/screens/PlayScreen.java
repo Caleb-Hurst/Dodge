@@ -43,6 +43,7 @@ public class PlayScreen implements Screen {
 	private TextService textService = new TextService();
 	private GameIncrement gameIncrement = new GameIncrement();
 	private GameIncrementService  gameIncrementService = new GameIncrementService(gameIncrement);
+	private DodgeGame game;
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
 	public PlayScreen(DodgeGame game) {
@@ -56,6 +57,7 @@ public class PlayScreen implements Screen {
 		this.asteroidService = new AsteroidService();
 		this.asteroid = objectManagerService.createAsteroid(playerShip, gameIncrement.getObjectSpeed());
 		this.mathUtil = new MathUtil();
+		this.game = game;
 
 	}
 	
@@ -86,7 +88,7 @@ public class PlayScreen implements Screen {
 		asteroidEventService.updateAsteroids(delta, playerShip, enemyService.getEnemies(), explosion);
 		spriteBatch.begin();
 		textService.flashColors(playerShip, font);
-		soundManagerService.playBackgroundMusic(gameIncrement);
+		soundManagerService.playBackgroundMusic(gameIncrement,playerShip);
 		
 		// Draw the score
 		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);
@@ -117,6 +119,10 @@ public class PlayScreen implements Screen {
 		explosion.draw(spriteBatch);
 //		megaAsteroid.draw(spriteBatch);
 		spriteBatch.end();
+		if (!playerShip.isAlive()) {
+	        game.setScreen(new DeathScreen(game)); // Adjust the class and constructor as needed
+	        dispose();
+	    }
 	}
 
 	@Override
@@ -143,7 +149,6 @@ public class PlayScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

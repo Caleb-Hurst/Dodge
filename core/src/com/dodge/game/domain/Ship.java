@@ -11,8 +11,9 @@ public class Ship {
 	private Rectangle boundingBox;
 	private float x;
 	private float y;
-	private int score = 12;
+	private int score = 0;
 	private boolean isMultipleOfTen = false;
+	private boolean isAlive = true;
 	public Ship(float x, float y, float width, float height, String texturePath) {
 		Texture shipTexture = new Texture(texturePath);
 		sprite = new Sprite(shipTexture);
@@ -117,6 +118,14 @@ public class Ship {
 
 	public void setMultipleOfTen(boolean isMultipleOfTen) {
 		this.isMultipleOfTen = isMultipleOfTen;
+	}
+
+	public boolean isAlive() {
+		return isAlive;
+	}
+
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
 	}
 	
 

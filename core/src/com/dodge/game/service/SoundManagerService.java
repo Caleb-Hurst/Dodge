@@ -32,7 +32,7 @@ public class SoundManagerService {
 		return music;
 	}
 
-	public void playBackgroundMusic(GameIncrement gameIncrement) {
+	public void playBackgroundMusic(GameIncrement gameIncrement,Ship playerShip) {
 		if (!gameIncrement.isAsteroidEventHappening() && !PSEHasBeenPlayed) {
 			if (backgroundMusic != null) {
 				backgroundMusic.stop();
@@ -54,6 +54,8 @@ public class SoundManagerService {
 			backgroundMusic.play();
 			AEHasBeenPlayed = true;
 			PSEHasBeenPlayed = false;
+		}else if (!playerShip.isAlive()) {
+			backgroundMusic.stop();
 		}
 	}
 

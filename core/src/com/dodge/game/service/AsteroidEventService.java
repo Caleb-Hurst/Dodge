@@ -120,6 +120,7 @@ public class AsteroidEventService {
 									currentAsteroid.getSprite().getHeight() + 20);
 							holdExplosionOnScreen(explosion);
 							explosion.setActive(true);
+							playerShip.setAlive(false);
 						}
 						currentAsteroid.setActive(false);
 						otherAsteroid.setActive(false);
@@ -136,6 +137,7 @@ public class AsteroidEventService {
 				iterator.remove(); // Remove the asteroid if it goes too far outside the screen
 				System.out.println("REMOVED ASTEROID IN EVENT");
 			}
+			
 		}
 		asteroids.removeAll(asteroidsToRemove);
 	}

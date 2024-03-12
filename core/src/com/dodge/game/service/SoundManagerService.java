@@ -5,16 +5,18 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
+import com.dodge.game.domain.BackgroundMusic;
 import com.dodge.game.domain.GameIncrement;
 import com.dodge.game.domain.Ship;
 
 public class SoundManagerService {
-	private Music backgroundMusic;
+	private BackgroundMusic backgroundMusic = new BackgroundMusic();
+	private Music currentBackgroundMusic;
 	private boolean isMultipleOfTenSoundPlayed = false;
-	private boolean BGHasBeenPlayed = false;
+	private boolean isBackgroundMusicPlaying = false;
 	private boolean AEHasBeenPlayed = false;
 	private int lastMultipleOfTenScore = 0;
-
+	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	public Texture loadImage(String fileName) {
 		Texture texture = new Texture(Gdx.files.internal(fileName));
 		return texture;
@@ -30,32 +32,38 @@ public class SoundManagerService {
 		return music;
 	}
 
-	public void playMusic(GameIncrement gameIncrement) {
-		if (!gameIncrement.isAsteroidEventHappening() && !BGHasBeenPlayed) {
-			backgroundMusic = loadMusic("playScreenBackGroundMusic.mp3");
-			backgroundMusic.setLooping(true);
-			backgroundMusic.setVolume(.1f);
-			backgroundMusic.play();
+	public Music setBackgroundMusic(BackgroundMusic backgroundMusic, GameIncrement gameIncrement) {
+        if (gameIncrement.isAsteroidEventHappening()) {
+            backgroundMusic.setFileName("playScreenBackGroundMusic.mp3");
+        } else {
+            backgroundMusic.setFileName("asteroidEventLoop2.mp3");
+        }
 
-			// Set the flag to true to indicate that the music has been played
-			BGHasBeenPlayed = true;
-		} else if (gameIncrement.isAsteroidEventHappening()) {
-			// Reset the flag when the condition is no longer true
-			BGHasBeenPlayed = false;
-		}
-	}
+        String currentMusic = backgroundMusic.getFileName();
+        if (currentBackgroundMusic != null) {
+            currentBackgroundMusic.stop();
+            currentBackgroundMusic.dispose();
+            isBackgroundMusicPlaying = false;
+        }
+
+        currentBackgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(currentMusic));
+        return currentBackgroundMusic;
+    }
+
+    public void playBackgroundMusic(GameIncrement gameIncrement) {
+        if (!isBackgroundMusicPlaying) {
+            Music music = setBackgroundMusic(backgroundMusic, gameIncrement);
+            music.setLooping(true);
+            music.setVolume(0.1f);
+            music.play();
+            isBackgroundMusicPlaying = true;
+        }
+    }
+
 
 	public void setVolume(Music music, float x) {
 		music.setVolume(x);
 
-	}
-
-	public void stopMusic() {
-		if (backgroundMusic != null) {
-			backgroundMusic.stop();
-			backgroundMusic.dispose();
-			backgroundMusic = null; // Set to null to indicate that the music has been stopped and disposed
-		}
 	}
 
 	public void laser() {
@@ -120,12 +128,19 @@ public class SoundManagerService {
 	}
 
 	public void playAsteroidEventMusic(GameIncrement gameIncrement) {
-	    if (gameIncrement.isAsteroidEventHappening() && !AEHasBeenPlayed) {
-	        backgroundMusic = loadMusic("asteroidEventLoop2.mp3");
-	        backgroundMusic.setLooping(true);
-	        backgroundMusic.setVolume(0.1f);
-	        backgroundMusic.play();
-	        AEHasBeenPlayed = true;
-	    }
+		Music backgroundMusic = loadMusic("asteroidEventLoop2.mp3");
+
+		if (gameIncrement.isAsteroidEventHappening() && !AEHasBeenPlayed) {
+			backgroundMusic.setLooping(true);
+			backgroundMusic.setVolume(0.1f);
+			backgroundMusic.play();
+			AEHasBeenPlayed = true;
+		} else if (!gameIncrement.isAsteroidEventHappening() && AEHasBeenPlayed) {
+			if (backgroundMusic != null && backgroundMusic.isPlaying()) {
+				backgroundMusic.stop(); // Stop the music instead of pausing
+				System.out.println("STOPPED");
+				AEHasBeenPlayed = false; // Reset the flag
+			}
+		}
 	}
 }

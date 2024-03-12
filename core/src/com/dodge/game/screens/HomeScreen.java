@@ -116,7 +116,6 @@ public class HomeScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		soundManagerService.stopMusic();
 	}
 
 }

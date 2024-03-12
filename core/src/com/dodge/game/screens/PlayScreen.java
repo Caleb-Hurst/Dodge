@@ -86,8 +86,7 @@ public class PlayScreen implements Screen {
 		asteroidEventService.updateAsteroids(delta, playerShip, enemyService.getEnemies(), explosion);
 		spriteBatch.begin();
 		textService.flashColors(playerShip, font);
-		soundManagerService.playMusic(gameIncrement);
-		soundManagerService.playAsteroidEventMusic(gameIncrement);
+		soundManagerService.playBackgroundMusic(gameIncrement);
 		
 		// Draw the score
 		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);

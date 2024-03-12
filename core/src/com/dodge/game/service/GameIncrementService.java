@@ -30,14 +30,12 @@ public class GameIncrementService {
 			Timer.schedule(new Timer.Task() {
 				@Override
 				public void run() {
-					gameIncrement.setAsteroidEventHappening(false);
-					
+					gameIncrement.setAsteroidEventHappening(false);				
 				}
 			}, 20);
 			
 		}
-		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);
-		
+		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);	
 	}
 
 	private ObjectSpeed setObjectSpeeds(ObjectSpeed objectSpeed) {
@@ -45,7 +43,7 @@ public class GameIncrementService {
 			objectSpeed.setLaserSpeed(400);
 			objectSpeed.setAsteroidSpeed(200);
 			objectSpeed.setGenerateAsteroidInterval(3);
-			objectSpeed.setGenerateAsteroidEventInterval(1f);
+			objectSpeed.setGenerateAsteroidEventInterval(.5f);
 			objectSpeed.setAsteroidEventSpeed(mathUtil.generateRandomSpeed(objectSpeed.getAsteroidSpeed()));
 			objectSpeed.setEnemyShipSpeed(200);
 			objectSpeed.setGenerateEnemyShipInterval(5);

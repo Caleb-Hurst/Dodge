@@ -19,7 +19,6 @@ public class MathUtil {
 						@Override
 						public void run() {
 							playerShip.setMultipleOfTen(false);
-							System.out.println("IT WORKED");
 							isTimerDone = true;
 						}
 					}, 4);
@@ -42,7 +41,7 @@ public class MathUtil {
 				a *= 1.3;
 				gameIncrement.setGameScoreIncrement(a);
 				c++;
-				System.out.println("New Increment for event " + gameIncrement.getGameScoreIncrement());
+//				System.out.println("New Increment for event " + gameIncrement.getGameScoreIncrement());
 				if(c==2) {
 					c = 1;
 				}

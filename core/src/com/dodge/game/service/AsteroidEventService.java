@@ -36,7 +36,6 @@ public class AsteroidEventService {
 								asteroid.setActive(true);
 								asteroids.add(asteroid);
 								isAsteroidTimerActive = true;
-							System.out.println("Event occuring");
 						
 
 					}

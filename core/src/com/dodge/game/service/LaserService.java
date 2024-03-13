@@ -18,6 +18,7 @@ public class LaserService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	SoundManagerService soundManagerService = new SoundManagerService();
 	public ArrayList<Laser> playerLasers = new ArrayList<>();
+
 	public ArrayList<Laser> playerShoot(Ship playerShip) {
 		Laser laser = objectManagerService.createPlayerLaser(playerShip);
 		soundManagerService.laser();
@@ -42,7 +43,7 @@ public class LaserService {
 
 	public ArrayList<Laser> enemyShoot(Enemy enemyShip, ObjectSpeed objectSpeed) {
 		if (enemyShip.getSprite().getX() < Gdx.graphics.getWidth()) {
-			Laser laser = objectManagerService.createEnemyLaser(enemyShip,objectSpeed);
+			Laser laser = objectManagerService.createEnemyLaser(enemyShip, objectSpeed);
 			soundManagerService.enemyLaser();
 			float spriteCenterX = enemyShip.getX() + laser.getSprite().getWidth() / 2;
 			float spriteBottomY = enemyShip.getY() + -20f; // Change to bottom
@@ -105,6 +106,7 @@ public class LaserService {
 					explosion.setActive(true);
 					holdExplosionOnScreen(explosion);
 				}
+
 			}
 			// Optionally, you can add logic to check if the laser goes off the screen and
 			// handle it accordingly
@@ -114,15 +116,15 @@ public class LaserService {
 				iterator.remove(); // Remove the laser if it goes off the screen
 			}
 		}
-	    playerLasers.removeAll(lasersToRemove);
-	    playerShip.setScore(x);
+		playerLasers.removeAll(lasersToRemove);
+		playerShip.setScore(x);
 	}
 
 	public ArrayList<Laser> getPlayerLasers() {
 		return playerLasers;
 	}
 
-	public void updateEnemyLaser(float delta, ArrayList<Laser> enemyLasers) {
+	public void updateEnemyLaser(float delta, ArrayList<Laser> enemyLasers, Ship playerShip,Explosion explosion) {
 		Iterator<Laser> iterator = enemyLasers.iterator();
 		while (iterator.hasNext()) {
 			Laser currentLaser = iterator.next();
@@ -141,8 +143,32 @@ public class LaserService {
 				iterator.remove(); // Remove the laser if it goes off the screen
 				
 			}
+			Rectangle laserBoundingBox = new Rectangle(currentLaser.getSprite().getBoundingRectangle());
+			Rectangle shipBoundingBox = new Rectangle(playerShip.getSprite().getBoundingRectangle());
+			laserBoundingBox.width *= 0.2f; // Make it 80% of the original width
+			laserBoundingBox.height *= 0.2f; // Make it 80% of the original height
+			shipBoundingBox.width *= .6f;
+			shipBoundingBox.height *= .6f;
+			float shipX = playerShip.getSprite().getX();
+			float shipY = playerShip.getSprite().getY();
+			
+			if(laserBoundingBox.overlaps(shipBoundingBox)) {
+				explosion.getSprite().setPosition(shipX, shipY);
+				soundManagerService.explosion();
+				Timer.schedule(new Timer.Task() {
+					@Override
+					public void run() {
+						soundManagerService.playDeath();
+					}
+				}, .2f);
+				playerShip.setAlive(false);
+				explosion.setActive(true);
+				holdExplosionOnScreen(explosion);
+			}
 		}
+		
 	}
+
 	public void holdExplosionOnScreen(Explosion explosion) {
 
 		Timer.schedule(new Timer.Task() {

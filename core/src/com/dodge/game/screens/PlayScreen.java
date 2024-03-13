@@ -42,10 +42,11 @@ public class PlayScreen implements Screen {
 	private MathUtil mathUtil;
 	private TextService textService = new TextService();
 	private GameIncrement gameIncrement = new GameIncrement();
-	private GameIncrementService  gameIncrementService = new GameIncrementService(gameIncrement);
+	private GameIncrementService gameIncrementService = new GameIncrementService(gameIncrement);
 	private DodgeGame game;
 	// move this to constants class
 	private static final float TOP_AREA_HEIGHT = 500f;
+
 	public PlayScreen(DodgeGame game) {
 		this.laserService = new LaserService();
 		this.soundManagerService = new SoundManagerService();
@@ -60,7 +61,7 @@ public class PlayScreen implements Screen {
 		this.game = game;
 
 	}
-	
+
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
@@ -68,18 +69,18 @@ public class PlayScreen implements Screen {
 //		soundManagerService.setVolume(backgroundMusic, .1f);
 		shapeRenderer = new ShapeRenderer();
 		font.getData().setScale(5);
-		
+
 	}
 
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
-		gameIncrementService.increaseGameSpeed(playerShip,gameIncrement);
+		gameIncrementService.increaseGameSpeed(playerShip, gameIncrement);
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);
 		enemyService.updateEnemyShip(delta, playerShip);
-		asteroidService.updateAsteroids(delta, playerShip,enemyService.getEnemies(), explosion);
+		asteroidService.updateAsteroids(delta, playerShip, enemyService.getEnemies(), explosion);
 		asteroidService.generateAsteroidWithIncrement(playerShip, gameIncrement);
 		enemyService.generateEnemyEveryWithIncrementSeconds(playerShip, gameIncrement);
 		mathUtil.isScoreMultipleOfTen(playerShip);
@@ -88,19 +89,20 @@ public class PlayScreen implements Screen {
 		asteroidEventService.updateAsteroids(delta, playerShip, enemyService.getEnemies(), explosion);
 		spriteBatch.begin();
 		textService.flashColors(playerShip, font);
-		soundManagerService.playBackgroundMusic(gameIncrement,playerShip);
-		
+		soundManagerService.playBackgroundMusic(gameIncrement, playerShip);
+
 		// Draw the score
-		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150, Gdx.graphics.getHeight() - 10);
+		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150,
+				Gdx.graphics.getHeight() - 10);
 		playerShip.draw(spriteBatch);
-		
+
 		for (Laser laser : laserService.getPlayerLasers()) {
 			laser.draw(spriteBatch);
 		}
 		playerShip.draw(spriteBatch);
 		for (Enemy enemy : enemyService.getEnemies()) {
 			if (enemy.getLasers() != null) {
-				laserService.updateEnemyLaser(delta, enemy.getLasers());
+				laserService.updateEnemyLaser(delta, enemy.getLasers(), playerShip, explosion);
 				for (Laser laser : enemy.getLasers()) {
 					laser.draw(spriteBatch);
 				}
@@ -114,15 +116,15 @@ public class PlayScreen implements Screen {
 		}
 		for (Asteroid asteroid : asteroidEventService.getAsteroids()) {
 			asteroid.draw(spriteBatch);
-			
+
 		}
 		explosion.draw(spriteBatch);
 //		megaAsteroid.draw(spriteBatch);
 		spriteBatch.end();
 		if (!playerShip.isAlive()) {
-	        game.setScreen(new DeathScreen(game)); // Adjust the class and constructor as needed
-	        dispose();
-	    }
+			game.setScreen(new DeathScreen(game)); // Adjust the class and constructor as needed
+			dispose();
+		}
 	}
 
 	@Override
@@ -149,6 +151,13 @@ public class PlayScreen implements Screen {
 
 	@Override
 	public void dispose() {
+soundManagerService.stopMusic();
+asteroidService.getAsteroids().clear();
+for(Enemy enemy : enemyService.getEnemies()) {
+	enemy.getLasers().clear();
+}
+enemyService.getEnemies().clear();
+
 
 	}
 

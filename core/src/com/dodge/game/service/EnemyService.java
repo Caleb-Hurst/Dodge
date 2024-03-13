@@ -38,8 +38,10 @@ public class EnemyService {
 				Timer.schedule(new Timer.Task() {
 					@Override
 					public void run() {
-						createEnemies(playerShip, objectSpeed);
-						isEnemyTimerActive = true;
+						if (playerShip.isAlive()) {
+							createEnemies(playerShip, objectSpeed);
+							isEnemyTimerActive = true;
+						}
 					}
 				}, objectSpeed.getGenerateEnemyShipInterval());
 			}
@@ -50,12 +52,14 @@ public class EnemyService {
 		return 2 + random.nextFloat() * 3;
 	}
 
-	public Enemy shootLaserEvery3Seconds(Enemy enemy, ObjectSpeed objectSpeed) {
+	public Enemy shootLaserEvery3Seconds(Enemy enemy, ObjectSpeed objectSpeed, Ship playerShip) {
 		Timer.schedule(new Timer.Task() {
 			@Override
 			public void run() {
 				if (enemy.getActive()) {
-					laserService.enemyShoot(enemy, objectSpeed);
+					if (playerShip.isAlive()) {
+						laserService.enemyShoot(enemy, objectSpeed);
+					}
 				}
 			}
 		}, 2, generateRandomDelay());
@@ -65,7 +69,7 @@ public class EnemyService {
 
 	public ArrayList<Enemy> createEnemies(Ship playerShip, ObjectSpeed objectSpeed) {
 		Enemy enemy = objectManagerService.createEnemy(playerShip, objectSpeed);
-		shootLaserEvery3Seconds(enemy, objectSpeed);
+		shootLaserEvery3Seconds(enemy, objectSpeed, playerShip);
 		enemy.getSprite().setRotation(playerShip.getRotation());
 		enemy.setActive(true);
 		enemies.add(enemy);
@@ -121,7 +125,15 @@ public class EnemyService {
 				float deltaY = currentEnemy.getSpeed() * direction.y * delta;
 				currentEnemy.getSprite().translate(deltaX, deltaY);
 			}
-
+			Rectangle enemyBoundingBox = new Rectangle(currentEnemy.getSprite().getBoundingRectangle());
+			Rectangle shipBoundingBox = new Rectangle(playerShip.getSprite().getBoundingRectangle());
+			enemyBoundingBox.width *= 0.2f; // Make it 80% of the original width
+			enemyBoundingBox.height *= 0.2f; // Make it 80% of the original height
+			shipBoundingBox.width *= .2f;
+			shipBoundingBox.height *= .2f;
+			if (enemyBoundingBox.overlaps(shipBoundingBox)) {
+				playerShip.setAlive(false);
+			}
 			// Remove the enemy if it goes off the screen
 			if (currentEnemy.getSprite().getY() > Gdx.graphics.getHeight() || currentEnemy.getSprite().getY() < 0
 					|| currentEnemy.getSprite().getX() < 0

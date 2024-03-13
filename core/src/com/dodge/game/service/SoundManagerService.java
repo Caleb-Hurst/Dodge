@@ -140,5 +140,13 @@ public class SoundManagerService {
 		Sound sound = Gdx.audio.newSound(Gdx.files.internal("asteroidExplosion.mp3"));
 		sound.play(0.09f);
 	}
+	public void stopMusic() {
+		backgroundMusic.stop();
+	}
+	
+	public void playDeath() {
+		Sound sound = Gdx.audio.newSound(Gdx.files.internal("death.mp3"));
+		sound.play();
+	}
 
 }

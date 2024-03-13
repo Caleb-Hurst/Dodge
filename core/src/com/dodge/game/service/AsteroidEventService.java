@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
@@ -49,8 +52,10 @@ public class AsteroidEventService {
 		List<Asteroid> asteroidsToRemove = new ArrayList<>();
 		while (iterator.hasNext()) {
 			Asteroid currentAsteroid = iterator.next();
+			
 			Circle currentAsteroidCircle = new Circle(currentAsteroid.getSprite().getX(),
 					currentAsteroid.getSprite().getY(), currentAsteroid.getSprite().getWidth() / 2);
+			
 			// Calculate the movement along x and y axes based on the current angle
 			float deltaX = currentAsteroid.getSpeed() * delta * MathUtils.cosDeg(currentAsteroid.getAngle());
 			float deltaY = -currentAsteroid.getSpeed() * delta * MathUtils.sinDeg(currentAsteroid.getAngle());
@@ -91,7 +96,7 @@ public class AsteroidEventService {
 				if (currentAsteroid != otherAsteroid) { // Avoid self-collision check
 					Circle otherAsteroidCircle = new Circle(otherAsteroid.getSprite().getX(),
 							otherAsteroid.getSprite().getY(), otherAsteroid.getSprite().getWidth() / 2);
-
+					
 					if (Intersector.overlaps(currentAsteroidCircle, otherAsteroidCircle)) {
 						// Handle collision between asteroids
 
@@ -120,12 +125,52 @@ public class AsteroidEventService {
 									currentAsteroid.getSprite().getHeight() + 20);
 							holdExplosionOnScreen(explosion);
 							explosion.setActive(true);
-							playerShip.setAlive(false);
+							
 						}
 						currentAsteroid.setActive(false);
 						otherAsteroid.setActive(false);
 					}
+					
 				}
+			}
+			Circle shipCircle = new Circle(playerShip.getSprite().getX(),
+					playerShip.getSprite().getY(), playerShip.getSprite().getWidth() / 2);
+			ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+			// Set the projection matrix of the shapeRenderer
+			currentAsteroidCircle.radius *= .3f;
+			currentAsteroidCircle.setPosition(currentAsteroid.getSprite().getX(), currentAsteroid.getSprite().getY());
+
+			currentAsteroidCircle.x += 80f;
+			currentAsteroidCircle.y += 140;
+			// Begin drawing shapes
+			shapeRenderer.begin(ShapeType.Line);
+
+			// Set the color (optional)
+			shapeRenderer.setColor(Color.RED);
+
+			// Draw the circle
+			shapeRenderer.circle(currentAsteroidCircle.x, currentAsteroidCircle.y, currentAsteroidCircle.radius);
+
+			// End drawing shapes
+			shapeRenderer.end();
+			shipCircle.radius *= .3f;
+			
+			
+			float shipX = playerShip.getSprite().getX();
+			float shipY = playerShip.getSprite().getY();		
+			if(currentAsteroidCircle.overlaps(shipCircle)) {
+				explosion.getSprite().setPosition(shipX, shipY);
+				soundManagerService.explosion();
+				Timer.schedule(new Timer.Task() {
+					@Override
+					public void run() {
+						soundManagerService.playDeath();
+					}
+				}, .2f);
+				playerShip.setAlive(false);
+				explosion.setActive(true);
+				holdExplosionOnScreen(explosion);
 			}
 			// Optionally, you can add logic to check if the asteroid goes off the screen
 			// and

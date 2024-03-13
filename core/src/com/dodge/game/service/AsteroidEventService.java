@@ -25,6 +25,7 @@ public class AsteroidEventService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private SoundManagerService soundManagerService = new SoundManagerService();
 	private boolean isAsteroidTimerActive = true;
+	private CollisionDetectorService collisionDetectorService = new CollisionDetectorService();
 
 	public void generateAsteroidWithIncrement(Ship playerShip, GameIncrement gameIncrement) {
 		ObjectSpeed objectSpeed = gameIncrement.getObjectSpeed();
@@ -133,33 +134,13 @@ public class AsteroidEventService {
 					
 				}
 			}
-			Circle shipCircle = new Circle(playerShip.getSprite().getX(),
-					playerShip.getSprite().getY(), playerShip.getSprite().getWidth() / 2);
-			ShapeRenderer shapeRenderer = new ShapeRenderer();
-
-			// Set the projection matrix of the shapeRenderer
-			currentAsteroidCircle.radius *= .3f;
-			currentAsteroidCircle.setPosition(currentAsteroid.getSprite().getX(), currentAsteroid.getSprite().getY());
-
-			currentAsteroidCircle.x += 80f;
-			currentAsteroidCircle.y += 140;
-			// Begin drawing shapes
-			shapeRenderer.begin(ShapeType.Line);
-
-			// Set the color (optional)
-			shapeRenderer.setColor(Color.RED);
-
-			// Draw the circle
-			shapeRenderer.circle(currentAsteroidCircle.x, currentAsteroidCircle.y, currentAsteroidCircle.radius);
-
-			// End drawing shapes
-			shapeRenderer.end();
-			shipCircle.radius *= .3f;
-			
-			
+			Rectangle shipRectangle = collisionDetectorService.createPlayerShipHitBox(playerShip);
+			Rectangle asteroidRectangle = collisionDetectorService.createAsteroidHitBox(currentAsteroid);
+			collisionDetectorService.drawHitBoxAsteroid(asteroidRectangle, currentAsteroid);
+			collisionDetectorService.drawHitBoxPlayerShip(asteroidRectangle);
 			float shipX = playerShip.getSprite().getX();
 			float shipY = playerShip.getSprite().getY();		
-			if(currentAsteroidCircle.overlaps(shipCircle)) {
+			if(asteroidRectangle.overlaps(shipRectangle)) {
 				explosion.getSprite().setPosition(shipX, shipY);
 				soundManagerService.explosion();
 				Timer.schedule(new Timer.Task() {

@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
 		inputHandlerService.handleArrowInput(delta, playerShip, playerLaser);
 		inputHandlerService.handleSpacebarInput(playerShip);
 		laserService.updatePlayerLaser(delta, playerShip, enemyService.getEnemies(), explosion);
-		enemyService.updateEnemyShip(delta, playerShip);
+		enemyService.updateEnemyShip(delta, playerShip,explosion);
 		asteroidService.updateAsteroids(delta, playerShip, enemyService.getEnemies(), explosion);
 		asteroidService.generateAsteroidWithIncrement(playerShip, gameIncrement);
 		enemyService.generateEnemyEveryWithIncrementSeconds(playerShip, gameIncrement);
@@ -94,7 +94,6 @@ public class PlayScreen implements Screen {
 		// Draw the score
 		font.draw(spriteBatch, "Score: " + playerShip.getScore(), (Gdx.graphics.getWidth() / 2) - 150,
 				Gdx.graphics.getHeight() - 10);
-		playerShip.draw(spriteBatch);
 
 		for (Laser laser : laserService.getPlayerLasers()) {
 			laser.draw(spriteBatch);

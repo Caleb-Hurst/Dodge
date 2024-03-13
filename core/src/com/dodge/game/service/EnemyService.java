@@ -17,10 +17,12 @@ import com.dodge.game.domain.Ship;
 
 public class EnemyService {
 	private ObjectManagerService objectManagerService;
+	private SoundManagerService soundManagerService = new SoundManagerService();
 	private LaserService laserService;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
 	private Random random = new Random();
 	private int x = 5;
+	private CollisionDetectorService collisionDetectorService = new CollisionDetectorService();
 
 	public EnemyService(LaserService laserService, ObjectManagerService objectManagerService) {
 		this.laserService = laserService;
@@ -76,7 +78,7 @@ public class EnemyService {
 		return enemies;
 	}
 
-	public void updateEnemyShip(float delta, Ship playerShip) {
+	public void updateEnemyShip(float delta, Ship playerShip, Explosion explosion) {
 		Iterator<Enemy> iterator = enemies.iterator();
 		while (iterator.hasNext()) {
 			Enemy currentEnemy = iterator.next();
@@ -125,14 +127,25 @@ public class EnemyService {
 				float deltaY = currentEnemy.getSpeed() * direction.y * delta;
 				currentEnemy.getSprite().translate(deltaX, deltaY);
 			}
-			Rectangle enemyBoundingBox = new Rectangle(currentEnemy.getSprite().getBoundingRectangle());
-			Rectangle shipBoundingBox = new Rectangle(playerShip.getSprite().getBoundingRectangle());
-			enemyBoundingBox.width *= 0.2f; // Make it 80% of the original width
-			enemyBoundingBox.height *= 0.2f; // Make it 80% of the original height
-			shipBoundingBox.width *= .2f;
-			shipBoundingBox.height *= .2f;
+			Rectangle enemyBoundingBox = collisionDetectorService.createEnemyHitBox(currentEnemy);
+			Rectangle shipBoundingBox = collisionDetectorService.createPlayerShipHitBox(playerShip);
+			collisionDetectorService.drawHitBoxEnemyShip(enemyBoundingBox);
+			collisionDetectorService.drawHitBoxPlayerShip(shipBoundingBox);
+			
+			
 			if (enemyBoundingBox.overlaps(shipBoundingBox)) {
+				explosion.getSprite().setX(playerShip.getSprite().getX());
+				explosion.getSprite().setY(playerShip.getSprite().getY());
+				soundManagerService.explosion();
 				playerShip.setAlive(false);
+				Timer.schedule(new Timer.Task() {
+					@Override
+					public void run() {
+						soundManagerService.playDeath();
+					}
+				}, .2f);
+				explosion.setActive(true);
+				holdExplosionOnScreen(explosion);
 			}
 			// Remove the enemy if it goes off the screen
 			if (currentEnemy.getSprite().getY() > Gdx.graphics.getHeight() || currentEnemy.getSprite().getY() < 0
@@ -142,7 +155,16 @@ public class EnemyService {
 			}
 		}
 	}
+	public void holdExplosionOnScreen(Explosion explosion) {
 
+		Timer.schedule(new Timer.Task() {
+			@Override
+			public void run() {
+				explosion.setActive(false);
+			}
+		}, 1);
+
+	}
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
 	}

@@ -153,7 +153,8 @@ public class LaserService {
 			float shipY = playerShip.getSprite().getY();
 			
 			if(laserBoundingBox.overlaps(shipBoundingBox)) {
-				explosion.getSprite().setPosition(shipX, shipY);
+				explosion.getSprite().setX(shipX);
+				explosion.getSprite().setY(shipY);
 				soundManagerService.explosion();
 				Timer.schedule(new Timer.Task() {
 					@Override

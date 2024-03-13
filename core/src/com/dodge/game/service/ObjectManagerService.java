@@ -218,6 +218,29 @@ public class ObjectManagerService {
 		asteroid.getSprite().setOriginCenter();
 		return asteroid;
 	}
+	
+	public Asteroid testAsteroid(Ship playerShip) {
+		Random random = new Random();
+		float randomSize = random.nextFloat() * (250 - 70) + 70;
+		float randomDirection = random.nextFloat() * (282 - 270) + 270;
+
+		Asteroid asteroid = new Asteroid();
+
+		asteroid.setSprite("asteroid.png");
+
+		// Set angle towards player ship
+		Vector2 playerPosition = new Vector2(playerShip.getSprite().getX(), playerShip.getSprite().getY());
+		Vector2 asteroidPosition = new Vector2(asteroid.getSprite().getX(), asteroid.getSprite().getY());
+		float angleRad = MathUtils.atan2(playerPosition.y - asteroidPosition.y, playerPosition.x - asteroidPosition.x);
+		float angleDeg = MathUtils.radiansToDegrees * angleRad + randomDirection;
+
+		asteroid.setAngle(angleDeg);
+		asteroid.setRotation(angleDeg - 45);
+		asteroid.getSprite().setSize(100, 100);
+		asteroid.getSprite().setOriginCenter();
+		asteroid.getSprite().setPosition(0, 0);
+		return asteroid;
+	}
 
 	public Asteroid createMegaAsteroid(Ship playerShip) {
 		Random random = new Random();

@@ -6,7 +6,19 @@ project.ext.mainClassName = "com.dodge.game.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
+project(":desktop") {
+    apply plugin: "java"
 
+    dependencies {
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        // other dependencies...
+
+        mainClassName = "com.dodge.game.DesktopLauncher"
+    }
+}
 tasks.register('run', JavaExec) {
     dependsOn classes
     mainClass = project.mainClassName
@@ -34,7 +46,10 @@ tasks.register('debug', JavaExec) {
 tasks.register('dist', Jar) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes(
+            'Main-Class': project.mainClassName,
+            'Jvm-Arg': OperatingSystem.current() == OperatingSystem.MAC_OS ? '-XstartOnFirstThread' : ''
+        )
     }
     dependsOn configurations.runtimeClasspath
     from {

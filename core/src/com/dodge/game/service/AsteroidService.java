@@ -21,6 +21,7 @@ public class AsteroidService {
 	private ObjectManagerService objectManagerService = new ObjectManagerService();
 	private SoundManagerService soundManagerService = new SoundManagerService();
 	private boolean isAsteroidTimerActive = true;
+	private CollisionDetectorService collisionDetectorService = new CollisionDetectorService();
 
 	public void generateAsteroidWithIncrement(Ship playerShip, GameIncrement gameIncrement) {
 		ObjectSpeed objectSpeed = gameIncrement.getObjectSpeed();
@@ -94,13 +95,13 @@ public class AsteroidService {
 					holdExplosionOnScreen(explosion);
 				}
 			}
-			Circle shipCircle = new Circle(playerShip.getSprite().getX(), playerShip.getSprite().getY(),
-					playerShip.getSprite().getWidth() / 2);
-			shipCircle.radius *= .3f;
-
+			Rectangle shipRectangle = collisionDetectorService.createPlayerShipHitBox(playerShip);
+			Rectangle asteroidRectangle = collisionDetectorService.createAsteroidHitBox(currentAsteroid);
+			collisionDetectorService.drawHitBoxAsteroid(asteroidRectangle, currentAsteroid);
+			collisionDetectorService.drawHitBoxPlayerShip(shipRectangle);
 			float shipX = playerShip.getSprite().getX();
 			float shipY = playerShip.getSprite().getY();
-			if (currentAsteroidCircle.overlaps(shipCircle)) {
+			if (asteroidRectangle.overlaps(shipRectangle)) {
 				explosion.getSprite().setPosition(shipX, shipY);
 				soundManagerService.explosion();
 				Timer.schedule(new Timer.Task() {

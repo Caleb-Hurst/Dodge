@@ -1,0 +1,11 @@
+{
+  "jrePath": "jre",
+  "classPath": [
+    "desktop-1.0.jar"
+  ],
+  "mainClass": "com.dodge.game.DesktopLauncher",
+  "useZgcIfSupportedOs": true,
+  "vmArgs": [
+    "-XstartOnFirstThread"
+  ]
+}

@@ -97,8 +97,8 @@ public class AsteroidService {
 			}
 			Rectangle shipRectangle = collisionDetectorService.createPlayerShipHitBox(playerShip);
 			Rectangle asteroidRectangle = collisionDetectorService.createAsteroidHitBox(currentAsteroid);
-			collisionDetectorService.drawHitBoxAsteroid(asteroidRectangle, currentAsteroid);
-			collisionDetectorService.drawHitBoxPlayerShip(shipRectangle);
+//			collisionDetectorService.drawHitBoxAsteroid(asteroidRectangle, currentAsteroid);
+//			collisionDetectorService.drawHitBoxPlayerShip(shipRectangle);
 			float shipX = playerShip.getSprite().getX();
 			float shipY = playerShip.getSprite().getY();
 			if (asteroidRectangle.overlaps(shipRectangle)) {

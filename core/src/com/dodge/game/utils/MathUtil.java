@@ -32,29 +32,29 @@ public class MathUtil {
 		return 0;
 	}
 
-	public void multiplySpeedThreshold(Ship playerShip, GameIncrement gameIncrement) {
+	public void multiplySpeedIncrement(Ship playerShip, GameIncrement gameIncrement) {
 		int a = playerShip.getScore();
 		int b = gameIncrement.getGameScoreIncrement();
 		int c = gameIncrement.getGameScoreIncrementCounter();
 		int d = gameIncrement.getPreviousGameScoreIncrement();
-		if (a == b && c == 0 && a !=0) {		
-        		  	b += d    ;	
-  		  	gameIncrement.setPreviousGameScoreIncrement(d);
+		if (a == b && c == 0 && a != 0) {
+			b += d;
+			gameIncrement.setPreviousGameScoreIncrement(d);
 			gameIncrement.setGameScoreIncrement(b);
 			System.out.println("next event at " + gameIncrement.getGameScoreIncrement());
 			c++;
-	 		gameIncrement.setGameScoreIncrementCounter(c);
+			gameIncrement.setGameScoreIncrementCounter(c);
 		} else if (a >= b && c == 1) {
-  			d *= 1.7;
-  		  	gameIncrement.setGameScoreIncrement(d + a);
+			d *= 1.7;
+			gameIncrement.setGameScoreIncrement(d + a);
 			gameIncrement.setPreviousGameScoreIncrement(d);
 			System.out.println("2nd loop next event at " + gameIncrement.getGameScoreIncrement());
 			c = 0;
 			gameIncrement.setGameScoreIncrementCounter(c);
-		}    
+		}
 	}
- 
- 	public float multiplyByTwentyPercent(float x) {
+
+	public float multiplyByTwentyPercent(float x) {
 		x *= 1.05;
 		return x;
 	}

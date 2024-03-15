@@ -35,7 +35,7 @@ public class GameIncrementService {
 			}, 20);
 			
 		}
-		mathUtil.multiplySpeedThreshold(playerShip, gameIncrement);
+		mathUtil.multiplySpeedIncrement(playerShip, gameIncrement);
 	}
 
 	private ObjectSpeed setObjectSpeeds(ObjectSpeed objectSpeed) {

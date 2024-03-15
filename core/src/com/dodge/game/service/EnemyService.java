@@ -128,8 +128,8 @@ public class EnemyService {
 			}
 			Rectangle enemyBoundingBox = collisionDetectorService.createEnemyHitBox(currentEnemy);
 			Rectangle shipBoundingBox = collisionDetectorService.createPlayerShipHitBox(playerShip);
-			collisionDetectorService.drawHitBoxEnemyShip(enemyBoundingBox);
-			collisionDetectorService.drawHitBoxPlayerShip(shipBoundingBox);
+//			collisionDetectorService.drawHitBoxEnemyShip(enemyBoundingBox);
+//			collisionDetectorService.drawHitBoxPlayerShip(shipBoundingBox);
 						
 			if (enemyBoundingBox.overlaps(shipBoundingBox)) {
 				explosion.getSprite().setX(playerShip.getSprite().getX());

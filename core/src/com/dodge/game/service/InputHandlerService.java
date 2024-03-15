@@ -53,9 +53,9 @@ public class InputHandlerService {
 			if (!spaceBarPressedLastFrame) {
 				ArrayList<Laser> lasers = laserService.playerShoot(playerShip);
 				spaceBarPressedLastFrame = true;
-				int a = playerShip.getScore();
-				a++;
-				playerShip.setScore(a);
+//				int a = playerShip.getScore();
+//				a++;
+//				playerShip.setScore(a);
 				
 				return lasers;
 			}

@@ -10,7 +10,10 @@ java -jar desktop-1.0.jar
 
 java -XstartOnFirstThread -jar desktop-1.0.jar
 
+Jpackage export 
+Cd to root 
 
+./gradlew desktop:jpackageImage
 
 File to deploy with JDK 
 

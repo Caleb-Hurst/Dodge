@@ -161,7 +161,6 @@ public class AsteroidEventService {
 					|| currentAsteroid.getSprite().getY() > Gdx.graphics.getHeight() + 800
 					|| currentAsteroid.getSprite().getY() + currentAsteroid.getSprite().getHeight() < -800) {
 				iterator.remove(); // Remove the asteroid if it goes too far outside the screen
-				System.out.println("REMOVED ASTEROID IN EVENT");
 			}
 			
 		}

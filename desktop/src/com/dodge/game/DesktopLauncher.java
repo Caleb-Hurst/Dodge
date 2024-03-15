@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("Dodge");
-		config.setWindowedMode(1000, 800);
+		config.setWindowedMode(1400, 1200);
 		config.useVsync(true);
 		config.setForegroundFPS(60);
 		new Lwjgl3Application(new DodgeGame(), config);

@@ -1,9 +1,9 @@
 package com.dodge.game.domain;
 
 public class GameIncrement {
-	private int gameScoreIncrement = 12;
+	private int gameScoreIncrement =12;
 	private int gameScoreIncrementCounter;
-	private int previousGameScoreIncrement;
+	private int previousGameScoreIncrement = 12;
 	private ObjectSpeed objectSpeed = new ObjectSpeed();
 	private boolean isAsteroidEventHappening = false;
 	private float backgroundMusicSpeed;

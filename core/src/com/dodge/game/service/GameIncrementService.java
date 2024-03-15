@@ -24,11 +24,9 @@ public class GameIncrementService {
 		int score = playerShip.getScore();
 		int threshold = gameIncrement.getGameScoreIncrement();
 		
-		int previousThreshold = gameIncrement.getPreviousGameScoreIncrement();
-		if (score == threshold && score != previousThreshold) {
+		if (score == threshold) {
 			multiplyObjectSpeed(gameIncrement);
 			gameIncrement.setAsteroidEventHappening(true);
-			System.out.println(threshold);
 			Timer.schedule(new Timer.Task() {
 				@Override
 				public void run() {

@@ -1,0 +1,30 @@
+Gradle Commannds 
+
+Refresh/Build: ./gradlew clean build
+
+Deploy Jar: ./gradlew desktop:dist
+
+Run Jar: cd /Users/calebhurst/Desktop/GitHub/Dodge/desktop/build/libs 
+
+java -jar desktop-1.0.jar
+
+java -XstartOnFirstThread -jar desktop-1.0.jar
+
+
+
+File to deploy with JDK 
+
+java -jar packr-all-4.0.0.jar \
+     --platform mac \
+     --jdk jre-8u202-macosx-x64.tar \
+     --useZgcIfSupportedOs \
+     --executable CalebHurstDodge \
+     --classpath desktop-1.0.jar \
+     --mainclass com.dodge.game.DesktopLauncher \
+     --vmargs XstartOnFirstThread \
+     --resources assets \
+     --output out-mac
+
+// sign app 
+
+codesign --deep --force --verify --verbose --sign "Caleb Hurst" /Users/calebhurst/Desktop/GitHub/Dodge/out-mac

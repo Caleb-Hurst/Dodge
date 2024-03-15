@@ -118,7 +118,6 @@ public class EnemyService {
 						}
 					}, 3);
 				} else {
-					// Do nothing until the delay completes
 				}
 			} else {
 				// Calculate the movement regardless of delay
@@ -131,8 +130,7 @@ public class EnemyService {
 			Rectangle shipBoundingBox = collisionDetectorService.createPlayerShipHitBox(playerShip);
 //			collisionDetectorService.drawHitBoxEnemyShip(enemyBoundingBox);
 //			collisionDetectorService.drawHitBoxPlayerShip(shipBoundingBox);
-			
-			
+						
 			if (enemyBoundingBox.overlaps(shipBoundingBox)) {
 				explosion.getSprite().setX(playerShip.getSprite().getX());
 				explosion.getSprite().setY(playerShip.getSprite().getY());

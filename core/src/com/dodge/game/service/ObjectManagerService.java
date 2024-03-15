@@ -54,7 +54,7 @@ public class ObjectManagerService {
 		Laser laser = new Laser();
 		laser.setAngle(playerShip.getRotation());
 		laser.setSprite("laser-3.png");
-		laser.setSpeed(300);
+		laser.setSpeed(400);
 		laser.setWidth(6);
 		laser.setHeight(40);
 		laser.setSize(6, 40);

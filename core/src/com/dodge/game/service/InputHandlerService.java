@@ -22,28 +22,30 @@ public class InputHandlerService {
 	public void handleArrowInput(float delta, Ship playerShip, Laser laser) {
 		float speed = 250 * delta; // Adjust the speed
 		float rotationSpeed = 500;
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			playerShip.move(0, speed);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			playerShip.move(0, -speed);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			playerShip.move(-speed, 0);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			playerShip.move(speed, 0);
-		}
+		float currentX = playerShip.getX();
+	    float currentY = playerShip.getY();
+	    float screenHeight = Gdx.graphics.getHeight();
+	    float screenWidth = Gdx.graphics.getWidth();
 
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			playerShip.rotate(rotationSpeed * delta);
-//	        playerLaser.rotate(rotationSpeed * delta);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			playerShip.rotate(-rotationSpeed * delta);
-//	        playerLaser.rotate(rotationSpeed * delta);
-		}
+	    if (Gdx.input.isKeyPressed(Input.Keys.UP) && currentY < screenHeight - playerShip.getHeight()) {
+	        playerShip.move(0, speed);
+	    }
+	    if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && currentY > 0) {
+	        playerShip.move(0, -speed);
+	    }
+	    if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && currentX > 0) {
+	        playerShip.move(-speed, 0);
+	    }
+	    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && currentX < screenWidth - playerShip.getWidth()) {
+	        playerShip.move(speed, 0);
+	    }
 
+	    if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+	        playerShip.rotate(rotationSpeed * delta);
+	    }
+	    if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+	        playerShip.rotate(-rotationSpeed * delta);
+	    }
 	}
 
 	public ArrayList<Laser> handleSpacebarInput(Ship playerShip) {
@@ -51,6 +53,10 @@ public class InputHandlerService {
 			if (!spaceBarPressedLastFrame) {
 				ArrayList<Laser> lasers = laserService.playerShoot(playerShip);
 				spaceBarPressedLastFrame = true;
+				int a = playerShip.getScore();
+				a++;
+				playerShip.setScore(a);
+				
 				return lasers;
 			}
 		} else {
